@@ -1,4 +1,16 @@
 services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.local
+    working_dir: /app
+    ports:
+      - 3000:3000
+    restart: always
+    tty: true
+    volumes:
+      - ./client:/app
+
   server:
     build:
       context: ./server
