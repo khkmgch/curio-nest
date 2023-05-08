@@ -1,0 +1,31 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.local
+    working_dir: /app
+    ports:
+      - 5000:5000
+    restart: always
+    tty: true
+    volumes:
+      - ./server:/app
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: curio_nest
+
+  db:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      - curio-nest-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: curio_nest
+
+volumes:
+  curio-nest-data:
