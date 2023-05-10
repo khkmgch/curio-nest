@@ -18,6 +18,7 @@ services:
     working_dir: /app
     ports:
       - 5000:5000
+      - 5555:5555
     restart: always
     tty: true
     volumes:
