@@ -28,6 +28,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: secret
       MYSQL_DB: curio_nest
+      DATABASE_URL: mysql://root:secret@db:3306/curio_nest
 
   db:
     image: mysql:8.0
