@@ -19,6 +19,8 @@ FROM node:18.16.0-alpine3.17 AS runner
 
 ENV NODE_ENV=production
 
+EXPOSE 8080 
+
 WORKDIR /app
 
 COPY --from=builder /app/dist ./dist
