@@ -4,12 +4,13 @@ WORKDIR /app
 
 COPY package.json ./
 COPY yarn.lock ./
+COPY prisma ./prisma
 
-RUN yarn install
-
-COPY . .
+RUN yarn install --frozen-lockfile
 
 RUN yarn prisma generate
+
+COPY . .
 
 RUN yarn build
 
@@ -17,15 +18,19 @@ RUN yarn build
 
 FROM node:18.16.0-alpine3.17 AS runner
 
-ENV NODE_ENV=production
-ENV PORT=8080
+USER node
+
+ENV NODE_ENV production
 
 EXPOSE 8080 
 
 WORKDIR /app
 
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder --chown=node:node /app/package.json ./
+COPY --from=builder --chown=node:node /app/yarn.lock ./
+
+COPY --from=builder --chown=node:node /app/dist ./dist
+COPY --from=builder --chown=node:node /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
 
-CMD ["yarn", "run", "start:migrate:prod"]
+CMD ["yarn", "run", "start:prod"]
