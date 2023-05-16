@@ -24,22 +24,35 @@ services:
     volumes:
       - ./server:/app
     environment:
-      MYSQL_HOST: db
-      MYSQL_USER: root
-      MYSQL_PASSWORD: secret
-      MYSQL_DB: curio_nest
-      DATABASE_URL: mysql://root:secret@db:3306/curio_nest
+      POSTGRES_HOST: db
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: curio_nest
+      # DATABASE_URL: mysql://root:secret@db:3306/curio_nest
+      DATABASE_URL: postgresql://root:secret@db:5432/curio_nest?schema=public
 
+  # db:
+  #   image: mysql:8.0
+  #   ports:
+  #     - 3306:3306
+  #   restart: always
+  #   volumes:
+  #     - curio-nest-data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: secret
+  #     MYSQL_DATABASE: curio_nest
+  
   db:
-    image: mysql:8.0
+    image: postgres:14.8-alpine
     ports:
-      - 3306:3306
-    restart: always
+      - 5434:5432
     volumes:
-      - curio-nest-data:/var/lib/mysql
+      - curio-nest-data:/var/lib/postgresql/data
     environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: curio_nest
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: curio_nest
+    restart: always
 
 volumes:
   curio-nest-data:
