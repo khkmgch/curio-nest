@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime
+  googleBooksId String
+  isbn          String?
+  title         String?
+  publisher     String?
+  publishedDate String?
+  pageCount     String?
+  imgLink       String?
+  previewLink   String?
+  userId        Int
+  authors       String[]
+  User          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Link          Link[]
+}
+
+model Follow {
+  createdAt                     DateTime @default(now())
+  updatedAt                     DateTime
+  followerId                    Int
+  followingId                   Int
+  User_Follow_followerIdToUser  User     @relation("Follow_followerIdToUser", fields: [followerId], references: [id], onDelete: Cascade)
+  User_Follow_followingIdToUser User     @relation("Follow_followingIdToUser", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])
+}
+
+model Like {
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  userId     Int
+  questionId Int
+  Question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, questionId])
+}
+
+model Link {
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  questionId Int
+  bookId     Int
+  Book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  Question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@id([questionId, bookId])
+}
+
+model Question {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  title       String
+  description String?
+  isPrivate   Boolean
+  userId      Int
+  Like        Like[]
+  Link        Link[]
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                              Int        @id @default(autoincrement())
+  createdAt                       DateTime   @default(now())
+  updatedAt                       DateTime
+  email                           String     @unique
+  userName                        String
+  hashedPassword                  String
+  profilePicture                  String?
+  coverPicture                    String?
+  Book                            Book[]
+  Follow_Follow_followerIdToUser  Follow[]   @relation("Follow_followerIdToUser")
+  Follow_Follow_followingIdToUser Follow[]   @relation("Follow_followingIdToUser")
+  Like                            Like[]
+  Question                        Question[]
+}
