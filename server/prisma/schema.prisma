@@ -104,7 +104,7 @@ model Book {
   googleBooksId String
   isbn String?
   title String?
-  authors String?
+  authors String[]
   publisher String?
   publishedDate String?
   pageCount String?
