@@ -28,19 +28,7 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: curio_nest
-      # DATABASE_URL: mysql://root:secret@db:3306/curio_nest
       DATABASE_URL: postgresql://root:secret@db:5432/curio_nest?schema=public
-
-  # db:
-  #   image: mysql:8.0
-  #   ports:
-  #     - 3306:3306
-  #   restart: always
-  #   volumes:
-  #     - curio-nest-data:/var/lib/mysql
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: secret
-  #     MYSQL_DATABASE: curio_nest
   
   db:
     image: postgres:14.8-alpine
