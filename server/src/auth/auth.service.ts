@@ -43,6 +43,7 @@ export class AuthService {
           throw new ForbiddenException('This email is already taken');
         }
       }
+      console.error(err);
       throw err;
     }
   }
