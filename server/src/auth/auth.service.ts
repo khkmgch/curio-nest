@@ -7,7 +7,7 @@ import { IJwt } from './interfaces/i-jwt.interface';
 import { IMsg } from './interfaces/i-msg.interface';
 import * as bcrypt from 'bcrypt';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
-import { User_WithRelation } from 'src/types/prisma-extended/user-with-relation';
+import { User_WithRelation } from 'src/types/prisma-extended/user-with-relation.type';
 
 @Injectable()
 export class AuthService {
