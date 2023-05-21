@@ -51,7 +51,7 @@ export class AuthController {
     //Cookieの送受信が可能になるように'none'に設定。
     res.cookie('access_token', jwt.accessToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       sameSite: 'none',
       path: '/',
     });

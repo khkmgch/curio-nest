@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { User_WithRelation } from 'src/types/prisma-extended/user-with-relation';
+import { User_WithRelation } from 'src/types/prisma-extended/user-with-relation.type';
 
 //AuthGuard('jwt')をJwtStrategyでカスタマイズする。(cookieを取り出す場所やシークレットキーの設定など)
 
