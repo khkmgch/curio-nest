@@ -49,7 +49,7 @@ async function bootstrap() {
       cookie: {
         httpOnly: true,
         sameSite: 'none',
-        secure: false,
+        secure: true,
       },
       value: (req: Request): string => {
         return req.header('csrf-token');
