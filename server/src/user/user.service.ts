@@ -1,4 +1,7 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User_WithRelation } from 'src/types/prisma-extended/user-with-relation.type';
@@ -14,18 +17,19 @@ export class UserService {
     userId: number,
   ): Promise<Omit<User_WithRelation, 'hashedPassword'>> {
     try {
-      const user: User_WithRelation = await this.prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-        include: {
-          questions: true,
-          likeQuestions: true,
-          books: true,
-          followedBy: true,
-          following: true,
-        },
-      });
+      const user: User_WithRelation =
+        await this.prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+          include: {
+            questions: true,
+            likeQuestions: true,
+            books: true,
+            followedBy: true,
+            following: true,
+          },
+        });
       return user;
     } catch (err) {
       throw err;
@@ -37,21 +41,22 @@ export class UserService {
     userId: number,
     dto: UpdateUserDto,
   ): Promise<Omit<User_WithRelation, 'hashedPassword'>> {
-    const user: User_WithRelation = await this.prisma.user.update({
-      where: {
-        id: userId,
-      },
-      include: {
-        questions: true,
-        likeQuestions: true,
-        books: true,
-        followedBy: true,
-        following: true,
-      },
-      data: {
-        ...dto,
-      },
-    });
+    const user: User_WithRelation =
+      await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        include: {
+          questions: true,
+          likeQuestions: true,
+          books: true,
+          followedBy: true,
+          following: true,
+        },
+        data: {
+          ...dto,
+        },
+      });
     //updateメソッドは変更後のuserオブジェクトを返す。
     //ハッシュ化されたパスワードも返してしまうため、delete user.hashedPasswordで除いてから返す。
     delete user.hashedPassword;
@@ -59,7 +64,10 @@ export class UserService {
   }
 
   //ユーザー削除
-  async deleteUser(userId: number, targetId: number): Promise<IMsg> {
+  async deleteUser(
+    userId: number,
+    targetId: number,
+  ): Promise<IMsg> {
     if (userId === targetId) {
       try {
         const user: User = await this.prisma.user.delete({
@@ -74,12 +82,17 @@ export class UserService {
         throw err;
       }
     } else {
-      throw new ForbiddenException('No permission to delete');
+      throw new ForbiddenException(
+        'No permission to delete',
+      );
     }
   }
 
   //ユーザーをフォロー
-  async followUser(userId: number, targetUserId: number): Promise<IMsg> {
+  async followUser(
+    userId: number,
+    targetUserId: number,
+  ): Promise<IMsg> {
     //フォロー対象が自分自身でない場合、フォローできる
     if (userId !== targetUserId) {
       try {
@@ -98,8 +111,14 @@ export class UserService {
         });
         //既にフォローしているかどうか
         let isFollowed: boolean = false;
-        for (let i = 0; i < targetUser.followedBy.length; i++) {
-          if (targetUser.followedBy[i].followerId === userId) {
+        for (
+          let i = 0;
+          i < targetUser.followedBy.length;
+          i++
+        ) {
+          if (
+            targetUser.followedBy[i].followingId === userId
+          ) {
             isFollowed = true;
             break;
           }
@@ -109,8 +128,8 @@ export class UserService {
           //Follow(relation)を作成
           await this.prisma.follow.create({
             data: {
-              followerId: userId,
-              followingId: targetUserId,
+              followingId: userId,
+              followedId: targetUserId,
             },
           });
           return {
@@ -131,7 +150,10 @@ export class UserService {
   }
 
   //フォロー解除
-  async unfollowUser(userId: number, targetUserId: number): Promise<IMsg> {
+  async unfollowUser(
+    userId: number,
+    targetUserId: number,
+  ): Promise<IMsg> {
     //フォローを外す対象が自分自身でない場合、フォローを外すことができる
     if (userId !== targetUserId) {
       try {
@@ -151,8 +173,14 @@ export class UserService {
         //フォローをはずず対象のユーザーのfollowedByの中に自分がいた場合、フォローを外せる
         //既にフォローしているかどうか
         let isFollowed: boolean = false;
-        for (let i = 0; i < targetUser.followedBy.length; i++) {
-          if (targetUser.followedBy[i].followerId === userId) {
+        for (
+          let i = 0;
+          i < targetUser.followedBy.length;
+          i++
+        ) {
+          if (
+            targetUser.followedBy[i].followingId === userId
+          ) {
             isFollowed = true;
             break;
           }
@@ -162,9 +190,9 @@ export class UserService {
           //Follow(relation)を削除
           await this.prisma.follow.delete({
             where: {
-              followerId_followingId: {
-                followerId: userId,
-                followingId: targetUserId,
+              followingId_followedId: {
+                followingId: userId,
+                followedId: targetUserId,
               },
             },
           });
@@ -173,7 +201,8 @@ export class UserService {
           };
         } else {
           return {
-            message: 'フォローしていないのでフォロー解除できません',
+            message:
+              'フォローしていないのでフォロー解除できません',
           };
         }
       } catch (err) {
