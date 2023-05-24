@@ -28,7 +28,7 @@ export const DateChart: FC<Props> = ({ questions }) => {
   //コンポーネントの状態を初期設定するメソッド
   const init = (questions: Question_WithRelation[]) => {
     //questionsをグラフ用のデータに加工してdataに設定する
-    let data: DateChartData[] =
+    const data: DateChartData[] =
       DateChartUtil.processQuestions(questions);
     setData(data);
   };

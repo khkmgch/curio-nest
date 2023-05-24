@@ -36,17 +36,17 @@ export const ChartContainer: FC<Props> = ({
   //開いているページが自分or他の人によって、異なるQuestionsを返すメソッド
   const { fetchQuestions } = useGetQuestionList();
 
-  //コンポーネントの状態を初期設定するメソッド
-  const init = async () => {
-    const questions = await fetchQuestions(
-      false,
-      isMine,
-      loginQuestions,
-      userId
-    );
-    setQuestions(questions);
-  };
   useEffect(() => {
+    //コンポーネントの状態を初期設定するメソッド
+    const init = async () => {
+      const questions = await fetchQuestions(
+        false,
+        isMine,
+        loginQuestions,
+        userId
+      );
+      setQuestions(questions);
+    };
     init();
   }, []);
 

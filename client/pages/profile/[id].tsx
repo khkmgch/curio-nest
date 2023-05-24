@@ -92,42 +92,42 @@ const Profile: NextPage = () => {
   const { getUserById } = useGetUser();
 
   //コンポーネントの状態を初期設定するメソッド
-  
+
   useEffect(() => {
     const { id } = router.query;
     const init = async (
-        id: string | string[] | undefined
-      ) => {
-        if (typeof id !== 'string') return;
-        const response = await getUserById(parseInt(id));
-        if (response) {
-          const user = response;
-          //状態:userを初期化
-          setUser({
-            id: user.id,
-            email: user.email,
-            userName: user.userName,
-            profilePicture: user.profilePicture,
-            coverPicture: user.coverPicture,
-            questions: user.questions,
-            likeQuestions: user.likeQuestions,
-            books: user.books,
-            followedBy: user.followedBy,
-            following: user.following,
-          });
-          //状態:userNameInputを初期化
-          setUserNameInput(user.userName);
-          //状態:isFollowを初期化
-          for (let i = 0; i < user.followedBy.length; i++) {
-            const curr = user.followedBy[i];
-            //既にフォローしているかどうか探索
-            if (curr.followingId === loginUser?.id) {
-              setIsFollow(true);
-              break;
-            }
+      id: string | string[] | undefined
+    ) => {
+      if (typeof id !== 'string') return;
+      const response = await getUserById(parseInt(id));
+      if (response) {
+        const user = response;
+        //状態:userを初期化
+        setUser({
+          id: user.id,
+          email: user.email,
+          userName: user.userName,
+          profilePicture: user.profilePicture,
+          coverPicture: user.coverPicture,
+          questions: user.questions,
+          likeQuestions: user.likeQuestions,
+          books: user.books,
+          followedBy: user.followedBy,
+          following: user.following,
+        });
+        //状態:userNameInputを初期化
+        setUserNameInput(user.userName);
+        //状態:isFollowを初期化
+        for (let i = 0; i < user.followedBy.length; i++) {
+          const curr = user.followedBy[i];
+          //既にフォローしているかどうか探索
+          if (curr.followingId === loginUser?.id) {
+            setIsFollow(true);
+            break;
           }
         }
-      };
+      }
+    };
     init(id);
   }, [router.query, isFollow, loginUser]);
 
