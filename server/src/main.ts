@@ -2,7 +2,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 //ValidationPipe: DTOとクラスバリデーションを有効化する
-import { INestApplication, ValidationPipe } from '@nestjs/common';
+import {
+  INestApplication,
+  ValidationPipe,
+} from '@nestjs/common';
 
 //Request: リクエストのデータ型
 import { Request } from 'express';
@@ -14,18 +17,25 @@ import * as cookieParser from 'cookie-parser';
 import * as csurf from 'csurf';
 
 async function bootstrap() {
-  const app: INestApplication = await NestFactory.create(AppModule);
+  const app: INestApplication = await NestFactory.create(
+    AppModule,
+  );
 
   //DTOとクラスバリデーションを使う
   //whitelist: true で、dtoに含まれないものが送られてきた際に省く
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(
+    new ValidationPipe({ whitelist: true }),
+  );
 
   //Corsの設定
   app.enableCors({
     //credentials: フロントエンドとバックエンドでJWTトークンをcookieベースで通信する。
     credentials: true,
     //バックエンドのサービスへのアクセスを許可したい、フロントエンド(React側)のドメインを指定
-    origin: ['http://localhost:3000'],
+    origin: [
+      'http://localhost:3000',
+      'https://curio-nest.vercel.app',
+    ],
   });
 
   //グローバルのミドルウェアでcookieParserを実行し、
