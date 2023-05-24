@@ -22,6 +22,7 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
 
   //ログインしているユーザー
   const { data: user, status } = useQueryUser();
+  console.log('loginUser: ', user);
 
   //ログアウトのメソッド
   const logout = async () => {
