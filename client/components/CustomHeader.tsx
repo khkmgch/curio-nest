@@ -25,9 +25,6 @@ export const CustomHeader: FC<Props> = ({
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  //ログインしているユーザー
-  const { data: user, status } = useQueryUser();
-
   //ホームor認証画面の場合
   if (mode === 'Home' || mode === 'Auth')
     return (
@@ -80,6 +77,9 @@ export const CustomHeader: FC<Props> = ({
     );
   else {
     const PUBLIC_FOLDER = process.env.NEXT_PUBLIC_FOLDER;
+
+    //ログインしているユーザー
+    const { data: user, status } = useQueryUser();
 
     //ログアウトのメソッド
     const logout = async () => {
