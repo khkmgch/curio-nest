@@ -51,14 +51,14 @@ export const QuestionList: FC<Props> = ({
     userId: number
   ) => {
     //apiからデータを取ってくる
-    let questions = await fetchQuestions(
+    const questions = await fetchQuestions(
       isTimeline,
       isMine,
       loginQuestions,
       userId
     );
     //タイムラインorプロフィール、公開or非公開によって取ってきたデータ(questions)にフィルターをかける
-    let data: Question_WithRelation[] =
+    const data: Question_WithRelation[] =
       await filterQuestions(
         isTimeline,
         isMine,

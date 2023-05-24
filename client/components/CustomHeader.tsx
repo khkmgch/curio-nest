@@ -19,7 +19,15 @@ import { FC } from 'react';
 type Props = {
   mode: string;
 };
-export const CustomHeader: FC<Props> = ({ mode = 'Home' }) => {
+export const CustomHeader: FC<Props> = ({
+  mode = 'Home',
+}) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  //ログインしているユーザー
+  const { data: user, status } = useQueryUser();
+
   //ホームor認証画面の場合
   if (mode === 'Home' || mode === 'Auth')
     return (
@@ -72,11 +80,6 @@ export const CustomHeader: FC<Props> = ({ mode = 'Home' }) => {
     );
   else {
     const PUBLIC_FOLDER = process.env.NEXT_PUBLIC_FOLDER;
-    const router = useRouter();
-    const queryClient = useQueryClient();
-
-    //ログインしているユーザー
-    const { data: user, status } = useQueryUser();
 
     //ログアウトのメソッド
     const logout = async () => {
@@ -162,4 +165,3 @@ export const CustomHeader: FC<Props> = ({ mode = 'Home' }) => {
       );
   }
 };
-
