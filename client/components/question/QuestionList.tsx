@@ -39,40 +39,39 @@ export const QuestionList: FC<Props> = ({
   const { fetchQuestions, filterQuestions } =
     useGetQuestionList();
 
-  //apiから取ってきたデータをsetQuestionに渡して状態をセットする初期化メソッド
-  //Questionの公開・非公開の状態(isPrivate)によって、filter関数にかける。
-  const init = async (
-    isTimeline: boolean,
-    isMine: boolean,
-    loginQuestions: Question_WithRelation[] | undefined,
-    loginUser:
-      | Omit<User_WithRelation, 'hashedPassword'>
-      | undefined,
-    userId: number
-  ) => {
-    //apiからデータを取ってくる
-    const questions = await fetchQuestions(
-      isTimeline,
-      isMine,
-      loginQuestions,
-      userId
-    );
-    //タイムラインorプロフィール、公開or非公開によって取ってきたデータ(questions)にフィルターをかける
-    const data: Question_WithRelation[] =
-      await filterQuestions(
-        isTimeline,
-        isMine,
-        loginUser,
-        questions
-      );
-    //コンポーネントの状態:questionsにセット
-    if (data.length > 0) {
-      setQuestions(data);
-    }
-  };
-
   useEffect(() => {
     if (userId !== 0) {
+      //apiから取ってきたデータをsetQuestionに渡して状態をセットする初期化メソッド
+      //Questionの公開・非公開の状態(isPrivate)によって、filter関数にかける。
+      const init = async (
+        isTimeline: boolean,
+        isMine: boolean,
+        loginQuestions: Question_WithRelation[] | undefined,
+        loginUser:
+          | Omit<User_WithRelation, 'hashedPassword'>
+          | undefined,
+        userId: number
+      ) => {
+        //apiからデータを取ってくる
+        const questions = await fetchQuestions(
+          isTimeline,
+          isMine,
+          loginQuestions,
+          userId
+        );
+        //タイムラインorプロフィール、公開or非公開によって取ってきたデータ(questions)にフィルターをかける
+        const data: Question_WithRelation[] =
+          await filterQuestions(
+            isTimeline,
+            isMine,
+            loginUser,
+            questions
+          );
+        //コンポーネントの状態:questionsにセット
+        if (data.length > 0) {
+          setQuestions(data);
+        }
+      };
       init(
         isTimeline,
         isMine,
@@ -82,7 +81,6 @@ export const QuestionList: FC<Props> = ({
       );
     }
   }, [
-    init,
     loginQuestions,
     questionStatus,
     userId,

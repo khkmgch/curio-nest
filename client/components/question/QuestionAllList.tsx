@@ -21,17 +21,16 @@ export const QuestionAllList = () => {
   //apiからデータを取ってくるメソッド
   const { getAllQuestions } = useGetQuestion();
 
-  //apiから取ってきたデータをsetQuestionに渡して状態をセットする初期化メソッド
-  const init = async () => {
-    const data = await getAllQuestions();
-    if (data && data.length > 0) {
-      setQuestions(data);
-    }
-  };
-
   useEffect(() => {
+    //apiから取ってきたデータをsetQuestionに渡して状態をセットする初期化メソッド
+    const init = async () => {
+      const data = await getAllQuestions();
+      if (data && data.length > 0) {
+        setQuestions(data);
+      }
+    };
     init();
-  }, [status, init]);
+  }, [status]);
   if (status === 'loading' || !loginUser) return <Loader />;
 
   return (
