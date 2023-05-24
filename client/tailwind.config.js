@@ -17,7 +17,7 @@ module.exports = {
   },
   plugins: [],
   //Mantine UIとTailwind CSSの互換性の問題の解消のため、preflightの設定をする
-  // corePlugins: {
-  //   preflight: false,
-  // },
+  corePlugins: {
+    preflight: false,
+  },
 };
