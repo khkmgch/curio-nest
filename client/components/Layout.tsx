@@ -2,7 +2,8 @@ import { AppShell } from '@mantine/core';
 import Head from 'next/head';
 import React, { FC, ReactNode } from 'react';
 import { CustomFooter } from './CustomFooter';
-import { CustomHeader } from './CustomHeader';
+import { CustomAuthHeader } from './CustomAuthHeader';
+import { CustomUnAuthHeader } from './CustomUnAuthHeader';
 
 type Props = {
   title: string;
@@ -16,7 +17,13 @@ export const Layout: FC<Props> = ({
   return (
     <AppShell
       padding='md'
-      header={<CustomHeader mode={title} />}
+      header={
+        title === 'Home' || title === 'Auth' ? (
+          <CustomUnAuthHeader mode={title} />
+        ) : (
+          <CustomAuthHeader mode={title} />
+        )
+      }
       footer={<CustomFooter />}
       styles={(theme) => ({
         main: {
