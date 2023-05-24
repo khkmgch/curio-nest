@@ -1,4 +1,3 @@
-import React from 'react'
 import { useGetQuestion } from './useGetQuestion'
 import { Question_WithRelation } from '@/types/prisma-extended/question-with-relation.type'
 import { User_WithRelation } from '@/types/prisma-extended/user-with-relation.type'
