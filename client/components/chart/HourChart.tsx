@@ -23,7 +23,7 @@ export const HourChart: FC<Props> = ({ questions }) => {
 
   //コンポーネントの状態を初期設定するメソッド
   const init = (questions: Question_WithRelation[]) => {
-    let data: HourChartData[] = HourChartUtil.processQuestions(questions);
+    const data: HourChartData[] = HourChartUtil.processQuestions(questions);
     setData(data);
   };
   useEffect(() => {
