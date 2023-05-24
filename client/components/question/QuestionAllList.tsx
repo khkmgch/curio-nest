@@ -1,5 +1,4 @@
 import { List, Loader } from '@mantine/core';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useGetQuestion } from '@/hooks/question/useGetQuestion';
 import { useQueryUser } from '@/hooks/user/useQueryUser';
@@ -24,7 +23,7 @@ export const QuestionAllList = () => {
 
   //apiから取ってきたデータをsetQuestionに渡して状態をセットする初期化メソッド
   const init = async () => {
-    let data = await getAllQuestions();
+    const data = await getAllQuestions();
     if (data && data.length > 0) {
       setQuestions(data);
     }
@@ -32,7 +31,7 @@ export const QuestionAllList = () => {
 
   useEffect(() => {
     init();
-  }, [status]);
+  }, [status, init]);
   if (status === 'loading' || !loginUser) return <Loader />;
 
   return (

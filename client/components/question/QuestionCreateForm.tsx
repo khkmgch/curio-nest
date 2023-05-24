@@ -40,9 +40,9 @@ export const QuestionCreateForm = () => {
           color={
             theme.colorScheme === 'dark' ? 'gray' : 'pink'
           }
-          styles={(theme) => ({
-            root: {},
-          })}
+        //   styles={(theme) => ({
+        //     root: {},
+        //   })}
           onLabel={
             <IconLock
               size={16}

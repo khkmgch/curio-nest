@@ -82,6 +82,7 @@ export const QuestionList: FC<Props> = ({
       );
     }
   }, [
+    init,
     loginQuestions,
     questionStatus,
     userId,

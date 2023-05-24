@@ -63,7 +63,7 @@ export const QuestionItem: FC<Props> = ({
 
   useEffect(() => {
     init()
-  }, [])
+  }, [init])
 
   return (
     <List.Item className="my-4 flex md:h-56 w-full  flex-col bg-white p-3 md:p-4">

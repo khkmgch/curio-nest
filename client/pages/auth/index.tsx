@@ -78,9 +78,9 @@ const Auth: NextPage = () => {
       form.reset();
       //ダッシュボードに遷移
       router.push('/plaza');
-    } catch (e: any) {
+    } catch (error) {
       //setErrorでerrorステートにエラーメッセージを格納
-      setError(e.response.data.message);
+      setError('error');
     }
   };
   return (

@@ -3,8 +3,6 @@ import {
   IconBulb,
   IconCornerRightDown,
   IconQuestionMark,
-  IconRotateClockwise,
-  IconRotateClockwise2,
 } from '@tabler/icons';
 import { NextPage } from 'next';
 import { Layout } from '../components/Layout';
