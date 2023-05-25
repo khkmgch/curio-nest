@@ -21,7 +21,7 @@ import { join } from 'path';
     BookModule,
     UploadModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '../public'),
+      rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*'],
     }),
   ],
