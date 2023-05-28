@@ -152,7 +152,7 @@ const Profile: NextPage = () => {
               src={
                 user?.coverPicture
                   ? PUBLIC_FOLDER + '/' + user.coverPicture
-                  : PUBLIC_FOLDER + '/cover/tree.jpeg'
+                  : PUBLIC_FOLDER + '/cover/cover-sample.jpeg'
               }
               alt=''
               className='h-48 w-full object-cover'
@@ -166,7 +166,7 @@ const Profile: NextPage = () => {
                 size='md'
                 variant='unstyled'
                 accept='image/png,image/jpeg'
-                value={coverPicture}
+                // value={coverPicture}
                 onChange={(file) => {
                   setCoverPicture(file);
                   handleCoverPicture(file, user);
@@ -206,7 +206,7 @@ const Profile: NextPage = () => {
                 size='md'
                 variant='unstyled'
                 accept='image/png,image/jpeg'
-                value={profilePicture}
+                // value={profilePicture}
                 onChange={(file) => {
                   setProfilePicture(file);
                   handleProfilePicture(file, user);
