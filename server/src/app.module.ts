@@ -10,6 +10,7 @@ import { BookModule } from './book/book.module';
 import { UploadModule } from './upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { ChatgptModule } from './chatgpt/chatgpt.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*'],
     }),
+    ChatgptModule,
   ],
   controllers: [AppController],
   providers: [AppService],
