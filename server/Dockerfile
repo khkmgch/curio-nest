@@ -29,6 +29,7 @@ WORKDIR /app
 COPY --from=builder --chown=node:node /app/package.json ./
 COPY --from=builder --chown=node:node /app/yarn.lock ./
 
+COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/dist ./dist
 COPY --from=builder --chown=node:node /app/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/prisma ./prisma
