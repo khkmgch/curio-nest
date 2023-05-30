@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { CreateChatgptDto } from './dto/create-chatgpt.dto';
-import { UpdateChatgptDto } from './dto/update-chatgpt.dto';
-
+import {
+  ChatCompletionResponseMessage,
+  Configuration,
+  CreateChatCompletionRequest,
+  OpenAIApi,
+} from 'openai';
 @Injectable()
 export class ChatgptService {
-  create(createChatgptDto: CreateChatgptDto) {
-    return 'This action adds a new chatgpt';
+  private readonly openai: OpenAIApi;
+  constructor() {
+    const configuration: Configuration = new Configuration({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    this.openai = new OpenAIApi(configuration);
+
+    // const completion = await openai.createChatCompletion({
+    //   model: 'gpt-3.5-turbo',
+    //   messages: [{ role: 'user', content: 'Hello world' }],
+    // });
+    // console.log(completion.data.choices[0].message);
   }
 
-  findAll() {
-    return `This action returns all chatgpt`;
-  }
+  async getResponse(
+    prompt: string,
+  ): Promise<ChatCompletionResponseMessage> {
+    try {
+      const template: string =
+        'この疑問を解決するために、参考になる日本語の本のタイトルを3つ列挙して';
+      const params: CreateChatCompletionRequest = {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'user',
+            content: `"${prompt}" ${template}。`,
+          },
+        ],
+      };
+      console.log(params);
+      const response =
+        await this.openai.createChatCompletion(params);
 
-  findOne(id: number) {
-    return `This action returns a #${id} chatgpt`;
-  }
-
-  update(id: number, updateChatgptDto: UpdateChatgptDto) {
-    return `This action updates a #${id} chatgpt`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} chatgpt`;
+      return response.data.choices[0].message;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
