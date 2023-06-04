@@ -45,15 +45,15 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
       <Header
         height={70}
         p='xs'
-        className='flex flex-row items-center bg-white'
+        className='flex flex-row items-center border-4 border-dark-cyan-100 bg-grayish-yellow-500'
       >
         <div className='basis-1/4 md:pl-3 lg:pl-10'>
           <Link
             href='/plaza'
             style={{ textDecoration: 'none' }}
           >
-            <span className='text-xl font-semibold text-black  md:text-2xl  lg:text-3xl'>
-              Qu Back
+            <span className='smd:text-2xl text-xl font-semibold text-grayish-brown-500 lg:text-3xl'>
+              Curio Nest
             </span>
           </Link>
         </div>
@@ -64,7 +64,11 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
           >
             <IconClock
               size={40}
-              className='hover:text-custom-blue-4 cursor-pointer text-gray-300'
+              className={`cursor-pointer ${
+                mode === 'Plaza'
+                  ? 'text-bright-yellow-500'
+                  : 'text-grayish-brown-200'
+              }`}
             />
           </Link>
           <Link
@@ -80,7 +84,11 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
                   : PUBLIC_FOLDER + '/person/noAvatar.png'
               }
               alt=''
-              className='hover:outline-custom-blue-4 cursor-pointer rounded-full outline outline-2 outline-offset-2 outline-gray-300'
+              className={`outline-3 outline-offset-3 cursor-pointer rounded-full outline  ${
+                mode === 'Profile'
+                  ? 'outline-bright-yellow-500'
+                  : 'outline-grayish-brown-200'
+              }`}
               radius='xl'
               width={30}
               height={30}
@@ -93,14 +101,18 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
           >
             <IconSearch
               size={40}
-              className='hover:text-custom-blue-4 cursor-pointer text-gray-300'
+              className={`cursor-pointer  ${
+                mode === 'Search'
+                  ? 'text-bright-yellow-500'
+                  : 'text-grayish-brown-200'
+              }`}
             />
           </Link>
         </div>
         <div className='flex basis-1/4 justify-end md:pr-3 lg:pr-10'>
           <IconLogout
             size={40}
-            className='hover:text-custom-blue-4 cursor-pointer text-gray-300'
+            className='cursor-pointer text-grayish-brown-200 hover:text-deep-red-500'
             onClick={logout}
           />
         </div>
