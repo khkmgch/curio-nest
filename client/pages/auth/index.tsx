@@ -86,10 +86,10 @@ const Auth: NextPage = () => {
   return (
     <Layout title='Auth'>
       <div className='flex h-screen w-screen flex-col items-center justify-center '>
-        <div className='mb-5 text-3xl font-semibold '>
-          Qu Back へようこそ
+        <div className='mb-5 text-3xl font-semibold text-grayish-brown-500'>
+          Welcome to Curio Nest
         </div>
-        <div className='flex flex-col items-center justify-center rounded-md bg-white p-10 '>
+        <div className='flex flex-col items-center justify-center rounded-md bg-grayish-yellow-100  p-10 drop-shadow-2xl'>
           {/* errorに何らかの文字列が存在する場合にアラートを表示 */}
           {error && (
             <Alert
@@ -130,7 +130,7 @@ const Auth: NextPage = () => {
                 component='button'
                 type='button'
                 size='sm'
-                className='text-custom-blue-2'
+                className='text-bright-blue-500'
                 onClick={() => {
                   switchMode();
                 }}
@@ -144,14 +144,22 @@ const Auth: NextPage = () => {
                 styles={(theme) => ({
                   root: {
                     backgroundColor:
-                      theme.colors['custom-blue'][3],
+                      theme.colors['deep-red'][4],
+                    border: 0,
+                    height: 42,
+                    paddingLeft: 20,
+                    paddingRight: 20,
 
                     '&:hover': {
-                      backgroundColor: theme.fn.darken(
-                        '#747578',
-                        0.15
+                      backgroundColor: theme.fn.lighten(
+                        theme.colors['deep-red'][6],
+                        0.05
                       ),
                     },
+                  },
+
+                  leftIcon: {
+                    marginRight: 15,
                   },
                 })}
               >
