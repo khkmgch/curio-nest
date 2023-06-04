@@ -30,41 +30,46 @@ const Plaza: NextPage = () => {
   } else
     return (
       <Layout title='Plaza'>
-        <QuestionCreateForm />
-        <Switch
-          size='md'
-          label={state ? '全員' : '友達のみ'}
-          color={
-            theme.colorScheme === 'dark' ? 'gray' : 'indigo'
-          }
-          onLabel={
-            <IconUserPlus
-              size={16}
-              stroke={2.5}
-              color={theme.colors.orange[4]}
-            />
-          }
-          offLabel={
-            <IconUserPlus
-              size={16}
-              stroke={2.5}
-              color={theme.colors.indigo[6]}
-            />
-          }
-          checked={state}
-          onChange={toggle}
-        />
-        {state ? (
-          <QuestionAllList />
-        ) : typeof user?.id !== 'undefined' ? (
-          <QuestionList
-            isTimeline={true}
-            isMine={true}
-            userId={user?.id}
+        <div className='flex flex-col items-center w-full'>
+          <QuestionCreateForm />
+          <Switch
+          className='mt-5'
+            size='md'
+            label={state ? '全員' : '友達のみ'}
+            color={
+              theme.colorScheme === 'dark'
+                ? 'bright-yellow'
+                : 'bright-yellow'
+            }
+            onLabel={
+              <IconUserPlus
+                size={16}
+                stroke={2.5}
+                color={theme.colors['bright-blue'][4]}
+              />
+            }
+            offLabel={
+              <IconUserPlus
+                size={16}
+                stroke={2.5}
+                color={theme.colors['bright-yellow'][3]}
+              />
+            }
+            checked={state}
+            onChange={toggle}
           />
-        ) : (
-          <Loader />
-        )}
+          {state ? (
+            <QuestionAllList />
+          ) : typeof user?.id !== 'undefined' ? (
+            <QuestionList
+              isTimeline={true}
+              isMine={true}
+              userId={user?.id}
+            />
+          ) : (
+            <Loader />
+          )}
+        </div>
       </Layout>
     );
 };
