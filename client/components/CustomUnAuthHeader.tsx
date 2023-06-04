@@ -2,8 +2,7 @@ import { Button, Header } from '@mantine/core';
 import Link from 'next/link';
 import { FC } from 'react';
 
-type Props = {};
-export const CustomUnAuthHeader: FC<Props> = () => {
+export const CustomUnAuthHeader: FC = () => {
   //ホームor認証画面の場合
   return (
     <Header

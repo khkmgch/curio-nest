@@ -1,9 +1,3 @@
-import {
-  IconBook,
-  IconBulb,
-  IconCornerRightDown,
-  IconQuestionMark,
-} from '@tabler/icons';
 import { NextPage } from 'next';
 import { Layout } from '../components/Layout';
 
