@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         </div>
         <div className='flex h-1/3 w-full items-center justify-center'>
           <p className='absolute left-48 top-1/2 text-5xl text-bright-blue-500 underline decoration-bright-yellow-500 decoration-4'>
-            Let's manage your daily curiosity.
+            Let&apos;s manage your daily curiosity.
           </p>
         </div>
 

@@ -5,7 +5,7 @@ import { FC } from 'react';
 type Props = {
   mode: string;
 };
-export const CustomUnAuthHeader: FC<Props> = ({ mode }) => {
+export const CustomUnAuthHeader: FC<Props> = ({}) => {
   //ホームor認証画面の場合
   return (
     <Header
