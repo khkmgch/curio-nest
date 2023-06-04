@@ -28,19 +28,13 @@ export const Layout: FC<Props> = ({
       styles={(theme) => ({
         main: {
           backgroundColor:
-            title !== 'Home'
-              ? theme.colorScheme === 'dark'
-                ? theme.colors.dark[8]
-                : theme.colors['custom-blue'][0]
-              : theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
-              : theme.colors.white,
+            theme.colors['grayish-yellow'][4],
         },
       })}
     >
       <div className='flex min-h-screen flex-col items-center justify-center'>
         <Head>
-          <title>{title}</title>
+          <title>{`${title} | Curio Nest`}</title>
         </Head>
         <main className='flex w-screen flex-1 flex-col items-center justify-center'>
           {children}
