@@ -19,7 +19,7 @@ export const Layout: FC<Props> = ({
       padding='md'
       header={
         title === 'Home' || title === 'Auth' ? (
-          <CustomUnAuthHeader mode={title} />
+          <CustomUnAuthHeader />
         ) : (
           <CustomAuthHeader mode={title} />
         )
