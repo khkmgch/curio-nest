@@ -45,7 +45,7 @@ export const QuestionAllList = () => {
     >
       {questions?.map((question) => {
         return (
-          <Grid.Col md={6}>
+          <Grid.Col md={6} key={question.id}>
             <QuestionItem
               key={question.id}
               id={question.id}
