@@ -1,4 +1,4 @@
-import { List, Loader } from '@mantine/core';
+import { Grid, Loader } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
 import { useGetQuestion } from '@/hooks/question/useGetQuestion';
 import { useQueryUser } from '@/hooks/user/useQueryUser';
@@ -34,27 +34,33 @@ export const QuestionAllList = () => {
   if (status === 'loading' || !loginUser) return <Loader />;
 
   return (
-    <List
-      my='lg'
-      spacing='sm'
-      className='lg:w-192 w-full list-none px-2 md:w-4/5 '
+    <Grid
+      className='m-4 mt-0 w-4/5 '
+      justify='center'
+      align='flex-start'
+      gutter={15}
+      gutterXs='md'
+      gutterMd='xl'
+      gutterXl={50}
     >
       {questions?.map((question) => {
         return (
-          <QuestionItem
-            key={question.id}
-            id={question.id}
-            title={question.title}
-            description={question.description}
-            isPrivate={question.isPrivate}
-            createdAt={question.createdAt}
-            books={question.books}
-            likes={question.likes}
-            userId={question.userId}
-            isMine={loginUser.id === question.userId}
-          />
+          <Grid.Col md={6}>
+            <QuestionItem
+              key={question.id}
+              id={question.id}
+              title={question.title}
+              description={question.description}
+              isPrivate={question.isPrivate}
+              createdAt={question.createdAt}
+              books={question.books}
+              likes={question.likes}
+              userId={question.userId}
+              isMine={loginUser.id === question.userId}
+            />
+          </Grid.Col>
         );
       })}
-    </List>
+    </Grid>
   );
 };
