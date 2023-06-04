@@ -9,6 +9,7 @@ import {
 import axios from 'axios';
 import useGetCsrfToken from '@/hooks/auth/useGetCsrfToken';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import theme from '@/mantine/theme';
 
 //プロジェクト内でreactqueryを使用できるようにするために、queryClientを作成。
 //retry: REST APIへのfetchに失敗した場合に、自動的に3回までリトライを繰り返す機能
@@ -49,35 +50,7 @@ export default function App({
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          // colorScheme: 'light',
-          //プロジェクト全体のカラーテーマとフォントを設定
-          colorScheme: 'light',
-          fontFamily: 'Verdana, sans-serif',
-          fontSizes: {
-            xs: '10',
-            sm: '12',
-            md: '14',
-            lg: '16',
-            xl: '20',
-            xxl: '24',
-            xxxl: '28',
-          },
-          colors: {
-            'custom-blue': [
-              '#E4E6EB',
-              '#BEC0C4',
-              '#999B9E',
-              '#747578',
-              '#4A4B4D',
-            ],
-            'custom-yellow': ['#EBE7CC'],
-            'custom-green': ['#E6EBE4', '#818583'],
-            'custom-red': ['#EBE4E6', '#660A24'],
-            'custom-orange': ['#EBB52F'],
-          },
-        }}
+        theme={theme}
       >
         <Component {...pageProps} />
       </MantineProvider>

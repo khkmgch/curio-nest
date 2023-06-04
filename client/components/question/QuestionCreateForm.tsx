@@ -33,28 +33,30 @@ export const QuestionCreateForm = () => {
     });
   };
   return (
-    <div className='md:w-192 m-4 flex h-56 w-4/5 flex-col bg-white p-4'>
+    <div className='md:w-192 m-4 flex h-56 w-4/5 flex-col bg-grayish-yellow-100 p-4 drop-shadow-2xl '>
       <form onSubmit={handleSubmit}>
         <Switch
           size='md'
           color={
-            theme.colorScheme === 'dark' ? 'gray' : 'pink'
+            theme.colorScheme === 'dark'
+              ? 'bright-yellow'
+              : 'bright-yellow'
           }
-        //   styles={(theme) => ({
-        //     root: {},
-        //   })}
+          //   styles={(theme) => ({
+          //     root: {},
+          //   })}
           onLabel={
             <IconLock
               size={16}
               stroke={2.5}
-              color={theme.colors['custom-yellow'][0]}
+              color={theme.colors['bright-blue'][4]}
             />
           }
           offLabel={
             <IconLockOpen
               size={16}
               stroke={2.5}
-              color={theme.colors['custom-red'][1]}
+              color={theme.colors['bright-yellow'][3]}
             />
           }
           checked={creatingQuestion.isPrivate}
@@ -66,10 +68,10 @@ export const QuestionCreateForm = () => {
           }
         />
         <TextInput
-          className='h-20'
+          className='h-20 '
           size='lg'
           mt='md'
-          placeholder='今、気になっていることは何ですか？'
+          placeholder='今、気になっていることは？'
           variant='unstyled'
           //inputは入力がnullになるとエラーになるため、creatingQuestion.titleがない場合の''を設定しておく
           value={creatingQuestion.title || ''}
@@ -80,13 +82,39 @@ export const QuestionCreateForm = () => {
             })
           }
         />
-        <hr />
+        <hr className='h-0.5 border-0 bg-dark-cyan-100' />
 
         <Center mt='lg'>
           <Button
             disabled={creatingQuestion.title === ''}
-            color='gray'
             type='submit'
+            styles={(theme) => ({
+              root: {
+                backgroundColor:
+                  theme.colors['deep-red'][4],
+                border: 0,
+                height: 42,
+                paddingLeft: 20,
+                paddingRight: 20,
+
+                ':disabled': {
+                  backgroundColor: theme.fn.lighten(
+                    theme.colors['deep-red'][7],
+                    0.05
+                  ),
+                },
+                ':hover': {
+                  backgroundColor: theme.fn.lighten(
+                    theme.colors['deep-red'][7],
+                    0.05
+                  ),
+                },
+              },
+
+              leftIcon: {
+                marginRight: 15,
+              },
+            })}
           >
             作成
           </Button>

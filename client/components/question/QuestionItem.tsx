@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Image, List } from '@mantine/core';
+import { Image } from '@mantine/core';
 import {
   PencilAltIcon,
   TrashIcon,
@@ -75,7 +75,7 @@ export const QuestionItem: FC<Props> = ({
   }, []);
 
   return (
-    <List.Item className='my-4 flex w-full flex-col  bg-white p-3 md:h-56 md:p-4'>
+    <div className='flex flex-col bg-grayish-yellow-100 p-3 drop-shadow-2xl md:h-56 md:p-4 '>
       <div className='flex  h-12 items-center '>
         <Link
           href={`/profile/${userId}`}
@@ -94,23 +94,25 @@ export const QuestionItem: FC<Props> = ({
                 : PUBLIC_FOLDER + '/person/noAvatar.png'
             }
             alt=''
-            className='hover:outline-custom-blue-4 ml-1 mr-2 cursor-pointer rounded-full outline outline-2 outline-offset-2 outline-gray-300'
+            className='ml-1 mr-2 cursor-pointer rounded-full outline outline-2 outline-offset-2 outline-gray-300 hover:outline-bright-yellow-500'
           />
         </Link>
         <div className='flex flex-col'>
-          <h4 className='text-custom-blue-4 my-1'>
+          <h4 className='my-1 text-grayish-brown-500'>
             {questionUser?.userName}
           </h4>
 
           <TimeAgo
             datetime={createdAt}
             locale='ja'
-            className='text-custom-blue-2'
+            className='text-grayish-brown-500'
           />
         </div>
       </div>
       <div className='h-28  px-3 py-5'>
-        <span className='text-md md:text-lg'>{title}</span>
+        <span className='text-md text-grayish-brown-500 md:text-lg'>
+          {title}
+        </span>
       </div>
 
       <div className='flex h-8 items-start justify-end  pt-1'>
@@ -118,7 +120,7 @@ export const QuestionItem: FC<Props> = ({
           <>
             <Link href={`/question/${id}`}>
               <PencilAltIcon
-                className='text-custom-blue-2 hover:text-custom-blue-4 mx-1 h-6 w-6 cursor-pointer'
+                className='mx-1 h-6 w-6 cursor-pointer text-grayish-brown-500 hover:text-bright-yellow-500'
                 //クリックされた時に、Zustandのid, title, descriptionの値を現在フォーカスしているQuestionItemの値に書き換える
                 onClick={() => {
                   updateEditing({
@@ -133,7 +135,7 @@ export const QuestionItem: FC<Props> = ({
               />
             </Link>
             <TrashIcon
-              className='text-custom-blue-2 hover:text-custom-blue-4 h-6 w-6 cursor-pointer'
+              className='h-6 w-6 cursor-pointer text-grayish-brown-500 hover:text-bright-yellow-500'
               onClick={() => {
                 deleteQuestionMutation.mutate(id);
               }}
@@ -152,6 +154,6 @@ export const QuestionItem: FC<Props> = ({
           />
         )}
       </div>
-    </List.Item>
+    </div>
   );
 };

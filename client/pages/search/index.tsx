@@ -1,6 +1,6 @@
 import { Button, List, TextInput } from '@mantine/core'
 import { NextPage } from 'next'
-import { FormEvent, RefObject, useEffect, useRef, useState } from 'react'
+import { FormEvent, RefObject,  useRef, useState } from 'react'
 import { Layout } from '../../components/Layout'
 import { SearchedBookItem } from '@/components/book/SearchedBookItem'
 import { useGetBook } from '../../hooks/book/useGetBook'
