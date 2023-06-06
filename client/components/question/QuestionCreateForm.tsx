@@ -42,9 +42,6 @@ export const QuestionCreateForm = () => {
               ? 'bright-yellow'
               : 'bright-yellow'
           }
-          //   styles={(theme) => ({
-          //     root: {},
-          //   })}
           onLabel={
             <IconLock
               size={16}
@@ -91,7 +88,7 @@ export const QuestionCreateForm = () => {
             styles={(theme) => ({
               root: {
                 backgroundColor:
-                  theme.colors['deep-red'][4],
+                  theme.colors['deep-red'][5],
                 border: 0,
                 height: 42,
                 paddingLeft: 20,
@@ -105,7 +102,7 @@ export const QuestionCreateForm = () => {
                 },
                 ':hover': {
                   backgroundColor: theme.fn.lighten(
-                    theme.colors['deep-red'][7],
+                    theme.colors['deep-red'][3],
                     0.05
                   ),
                 },

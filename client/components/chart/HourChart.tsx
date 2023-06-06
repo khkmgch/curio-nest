@@ -62,7 +62,8 @@ export const HourChart: FC<Props> = ({ questions }) => {
         name='作成した時間帯'
         type='monotone'
         dataKey='value'
-        stroke='#0042EB'
+        stroke='#B32C2B'
+        strokeWidth={3}
       />
     </LineChart>
   );

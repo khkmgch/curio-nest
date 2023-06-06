@@ -16,7 +16,34 @@ module.exports = {
       fontSize: {
         '10xl': '10rem',
       },
+      width: {
+        128: '32rem',
+        192: '48rem',
+        256: '64rem',
+      },
       colors: {
+        wood: {
+          100: '#EFD2AA',
+          200: '#EDCDA0',
+          300: '#EBC997',
+          400: '#EAC48E',
+          500: '#e8bf85',
+          600: '#DAB37D',
+          700: '#CBA774',
+          800: '#BD9B6C',
+          900: '#AE8F64',
+        },
+        mist: {
+          100: '#F4F0DB',
+          200: '#F3EED8',
+          300: '#F1ECD4',
+          400: '#F0EBD0',
+          500: '#efe9cc',
+          600: '#E0DABF',
+          700: '#D1CCB3',
+          800: '#C2BDA6',
+          900: '#B3AF99',
+        },
         'bright-yellow': {
           100: '#F7E05E',
           200: '#F6DB47',

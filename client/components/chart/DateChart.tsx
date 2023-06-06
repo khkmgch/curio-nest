@@ -75,7 +75,7 @@ export const DateChart: FC<Props> = ({ questions }) => {
       <Bar
         name='作成した数'
         dataKey='count'
-        fill='#660A24'
+        fill='#B32C2B'
       />
     </BarChart>
     // </ResponsiveContainer>

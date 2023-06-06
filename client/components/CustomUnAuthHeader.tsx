@@ -28,7 +28,7 @@ export const CustomUnAuthHeader: FC = () => {
             styles={(theme) => ({
               root: {
                 backgroundColor:
-                  theme.colors['deep-red'][4],
+                  theme.colors['deep-red'][5],
                 border: 0,
                 height: 42,
                 paddingLeft: 20,
@@ -36,7 +36,7 @@ export const CustomUnAuthHeader: FC = () => {
 
                 '&:hover': {
                   backgroundColor: theme.fn.lighten(
-                    theme.colors['deep-red'][6],
+                    theme.colors['deep-red'][3],
                     0.05
                   ),
                 },

@@ -1,13 +1,9 @@
 import {
-  Grid,
   List,
-  Loader,
   ScrollArea,
 } from '@mantine/core';
 import { FC, useEffect, useState } from 'react';
 import { Book_WithRelation } from '@/types/prisma-extended/book-with-relation.type';
-import axios from 'axios';
-import { useQueryBook } from '@/hooks/book/useQueryBook';
 import { BookItem } from './BookItem';
 import { Link } from '@prisma/client';
 import { useMutateQuestion } from '@/hooks/question/useMutateQuestion';
@@ -67,7 +63,7 @@ export const BookList: FC<Props> = ({
     init(links);
   }, []);
   return (
-    <ScrollArea style={{ height: 700 }} offsetScrollbars>
+    <ScrollArea style={{ height: 600 }} offsetScrollbars>
       <List
         my='lg'
         spacing='sm'

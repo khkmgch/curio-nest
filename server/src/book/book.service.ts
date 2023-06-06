@@ -76,15 +76,26 @@ export class BookService {
     const titles: string[] =
       await NLPUtil.extractBookTitles(text);
     const books = [];
-    for (let i = 0; i < 3 && i < titles.length; i++) {
-      console.log(titles[i]);
-      books.push(await this.searchBooks(titles[i]));
+    let count: number = 0;
+    for (let i = 0; count < 3 && i < titles.length; i++) {
+      // console.log(titles[i]);
+      const book: IGoogleBooks = await this.searchBooks(
+        titles[i],
+      );
+      if (book.totalItems > 0) {
+        books.push(book);
+        count++;
+      }
     }
-    console.log('books: ', books);
+    // console.log('books: ', books);
     const res = [];
     for (let i = 0; i < books.length; i++) {
-      res.push(books[i].items[0]);
-      res.push(books[i].items[1]);
+      if (books[i].items.length > 0) {
+        res.push(books[i].items[0]);
+        if (books[i].items.length > 1) {
+          res.push(books[i].items[1]);
+        }
+      }
     }
     return res;
   }

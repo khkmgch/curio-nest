@@ -1,6 +1,6 @@
 import { Tuple, DefaultMantineColor } from '@mantine/core';
 
-type ExtendedCustomColors =
+type ExtendedColors =
   | 'bright-yellow'
   | 'deep-red'
   | 'bright-blue'
@@ -11,6 +11,6 @@ type ExtendedCustomColors =
 
 declare module '@mantine/core' {
   export interface MantineThemeColorsOverride {
-    colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
+    colors: Record<ExtendedColors, Tuple<string, 10>>;
   }
 }
