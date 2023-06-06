@@ -226,7 +226,7 @@ export const QuestionEditForm: FC<Props> = ({
             gutterXl={50}
           >
             {recommendedBooks.map((item) => (
-              <Grid.Col span={2}>
+              <Grid.Col span={2} key={item.id.toString()}>
                 <RecommendedBookItem
                   key={item.id.toString()}
                   id={item.id}
