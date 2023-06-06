@@ -71,6 +71,7 @@ export const BookItem: FC<Props> = ({
 
         <Menu.Dropdown>
           <Menu.Item
+          color='grayish-brown'
             icon={<IconExternalLink size={14} />}
             component="a"
             href={previewLink || ''}
@@ -81,7 +82,7 @@ export const BookItem: FC<Props> = ({
           <Menu.Divider />
 
           <Menu.Item
-            color="red"
+            color='deep-red'
             icon={<IconTrash size={14} />}
             onClick={() => deleteLinkToQuestion()}
           >
@@ -110,6 +111,7 @@ export const BookItem: FC<Props> = ({
 
         <Menu.Dropdown>
           <Menu.Item
+          color='dark-cyan'
             icon={<IconArrowNarrowLeft size={14} />}
             onClick={() => createLinkToQuestion()}
           >
@@ -142,6 +144,7 @@ export const BookItem: FC<Props> = ({
 
         <Menu.Dropdown>
           <Menu.Item
+          color='grayish-brown'
             icon={<IconExternalLink size={14} />}
             component="a"
             href={previewLink || ''}
@@ -152,7 +155,7 @@ export const BookItem: FC<Props> = ({
           <Menu.Divider />
 
           <Menu.Item
-            color="red"
+            color="deep-red"
             icon={<IconTrash size={14} />}
             onClick={() => deleteBookFromShelf()}
           >
@@ -181,6 +184,7 @@ export const BookItem: FC<Props> = ({
 
         <Menu.Dropdown>
           <Menu.Item
+          color='grayish-brown'
             icon={<IconExternalLink size={14} />}
             component="a"
             href={previewLink || ''}

@@ -60,7 +60,7 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
         <div className='flex basis-1/2 flex-row items-center justify-center'>
           <Link
             href='/plaza'
-            className='flex items-center justify-center'
+            className='flex items-center justify-center basis-1/6'
           >
             <IconClock
               size={40}
@@ -73,7 +73,7 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
           </Link>
           <Link
             href={`/profile/${user?.id}`}
-            className='mx-5 flex items-center justify-center'
+            className='mx-5 flex items-center justify-center basis-1/6'
           >
             <Image
               src={
@@ -97,7 +97,7 @@ export const CustomAuthHeader: FC<Props> = ({ mode }) => {
           </Link>
           <Link
             href='/search'
-            className='flex items-center justify-center'
+            className='flex items-center justify-center basis-1/6'
           >
             <IconSearch
               size={40}

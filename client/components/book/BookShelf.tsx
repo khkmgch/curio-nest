@@ -76,13 +76,18 @@ export const BookShelf: FC<Props> = ({
   //プロフィール本棚閲覧の場合
   else if (!questionId)
     return (
-      <div className='bg-custom-yellow  lg:w-256 mt-5 flex w-4/5 items-center justify-center lg:p-5'>
+      <div
+        className='mt-5 flex w-4/5 items-center justify-center 
+      border-4 border-solid border-mist-500 
+      bg-grayish-brown-100/75 shadow-2xl outline outline-8 
+      outline-wood-500 lg:w-256 lg:p-5'
+      >
         <ScrollArea
           w={{ base: 350, sm: 500, md: 750, lg: 1024 }}
           h={{ base: 350, sm: 500, md: 750, lg: 750 }}
           offsetScrollbars
         >
-          <Grid className='' gutter={30} align='flex-end '>
+          <Grid className='' gutter={30} align='flex-end'>
             {books?.map((book) => (
               <Grid.Col sm={6} md={4} lg={2} key={book.id}>
                 <BookItem
@@ -112,7 +117,7 @@ export const BookShelf: FC<Props> = ({
   //Question編集画面に本のリストとして表示する場合
   else
     return (
-      <ScrollArea style={{ height: 700 }} offsetScrollbars>
+      <ScrollArea style={{ height: 600 }} offsetScrollbars>
         <List
           my='lg'
           spacing='sm'

@@ -58,7 +58,7 @@ const Search: NextPage = () => {
           ref={keywordRef}
           className="mr-5 w-96"
         />
-        <Button type="submit" variant="light" color="teal">
+        <Button type="submit" variant='filled' color='deep-red'>
           探す
         </Button>
       </form>

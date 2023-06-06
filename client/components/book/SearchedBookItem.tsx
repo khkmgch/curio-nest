@@ -19,34 +19,34 @@ import { useSearchBook } from '@/hooks/search/useSearchBook';
 //   imgLink String?
 //   previewLink String?
 
-type Item = {
-  id: string;
-  volumeInfo: {
-    allowAnonLogging: boolean;
-    authors: string[];
-    canonicalVolumeLink: string;
-    categories: string[];
-    contentVersion: string;
-    description: string;
-    imageLinks: {
-      smallThumbnail: string;
-      thumbnail: string;
-    };
-    industryIdentifiers: Array<{
-      type: string;
-      identifier: string;
-    }>;
-    infoLink: string;
-    language: string;
-    maturityRating: string;
-    pageCount: number;
-    previewLink: string;
-    printType: string;
-    publishedDate: string;
-    readingModes: { text: boolean; image: boolean };
-    title: string;
-  };
-};
+// type Item = {
+//   id: string;
+//   volumeInfo: {
+//     allowAnonLogging: boolean;
+//     authors: string[];
+//     canonicalVolumeLink: string;
+//     categories: string[];
+//     contentVersion: string;
+//     description: string;
+//     imageLinks: {
+//       smallThumbnail: string;
+//       thumbnail: string;
+//     };
+//     industryIdentifiers: Array<{
+//       type: string;
+//       identifier: string;
+//     }>;
+//     infoLink: string;
+//     language: string;
+//     maturityRating: string;
+//     pageCount: number;
+//     previewLink: string;
+//     printType: string;
+//     publishedDate: string;
+//     readingModes: { text: boolean; image: boolean };
+//     title: string;
+//   };
+// };
 
 type Props = {
   id: string;
@@ -115,17 +115,17 @@ export const SearchedBookItem: FC<Props> = ({
     init(info);
   }, []);
   return (
-    <List.Item className='my-4 w-full bg-white p-4 '>
-      <div className='sm:w-128 md:w-192 flex h-56 w-full flex-row '>
-        <div className='flex h-full basis-1/4  items-center justify-center border-2 border-dotted border-gray-400 bg-slate-100'>
+    <List.Item className='my-4 w-full bg-grayish-yellow-100 p-4 drop-shadow-2xl'>
+      <div className='flex h-56 w-full flex-row md:w-128 lg:w-192'>
+        <div className='flex h-full basis-1/4  items-center justify-center border-2 border-dotted border-gray-400 bg-slate-100 '>
           <img
             src={info.imageLinks?.thumbnail || ''}
             className='object-scale-down  md:object-contain'
           />
         </div>
-        <div className='flex basis-2/3 flex-col md:basis-1/2 '>
+        <div className='flex basis-2/3 flex-col overflow-y-auto text-grayish-brown-500 md:basis-1/2'>
           <div>
-            <h3>「{info.title || ''}」</h3>
+            <h3 className=''>「{info.title || ''}」</h3>
           </div>
           <div className='ml-10 w-4/5 '>
             <div className='mb-3 flex'>
@@ -150,16 +150,18 @@ export const SearchedBookItem: FC<Props> = ({
             </div>
 
             <div className='flex'>
-              <div className='w-1/6'>ページ: </div>
-              <div className='w-5/6'>{info.pageCount}</div>
+              <div className='w-1/3'>ページ: </div>
+              <div className='w-2/3'>{info.pageCount}</div>
             </div>
           </div>
         </div>
         <div className='flex basis-1/6 flex-col  items-center justify-around md:basis-1/4 '>
-          <Button variant='light' color='gray'>
+          <Button variant='outline' color='bright-blue'>
             <a
               href={info.previewLink || ''}
               style={{ textDecoration: 'none' }}
+              target='_blank'
+              rel='noopener noreferrer'
             >
               詳しく見る
             </a>
@@ -172,8 +174,8 @@ export const SearchedBookItem: FC<Props> = ({
           >
             <Button
               type='submit'
-              variant='light'
-              color='orange'
+              variant='filled'
+              color='bright-yellow'
             >
               本棚に追加
             </Button>
