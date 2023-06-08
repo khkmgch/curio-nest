@@ -1,2 +1,2 @@
 # curio-nest
-[specs](/example.html)
+https://github.com/khkmgch/curio-nest/example.html
