@@ -1,4 +1,4 @@
-# :grey_question:CURIO NEST
+# :grey_question:Curio Nest
 
 ## :globe_with_meridians:Url
 https://curio-nest.vercel.app/
