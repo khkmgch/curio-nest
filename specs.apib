@@ -1,153 +1,1461 @@
 FORMAT: 1A
-HOST: https://alpha-api.app.net
+HOST: https://curio-nest-server.onrender.com
 
-# Real World API
-This API Blueprint demonstrates a real world example documenting a portion of
-[App.net API](http://developers.app.net).
+# Curio Nest API
+This API Blueprint shows the documentation for [Curio Nest API](https://curio-nest-server.onrender.com).
 
 NOTE: This document is a **work in progress**.
 
-# Group Posts
-This section groups App.net post resources.
+# Group Auth
+This section groups Curio Nest auth resources.
 
-## Post [/stream/0/posts/{post_id}]
-A Post is the other central object utilized by the App.net Stream API. It has
-rich text and annotations which comprise all of the content a users sees in
-their feed. Posts are closely tied to the follow graph...
+## Csrf [/auth/csrf]
+CSRF（Cross-Site Request Forgeries）攻撃に対する対策として、
+csrfTokenを発行します。
 
-+ Parameters
-    + post_id: `1` (string) - The id of the Post.
+以後、RequestのHeaderにcsrfTokenが含まれない場合は、不正なリクエストとみなされます。
 
 + Model (application/json)
 
     ```js
     {
-        "data": {
-            "id": "1", // note this is a string
-            "user": {
-                ...
-            },
-            "created_at": "2012-07-16T17:25:47Z",
-            "text": "@berg FIRST post on this new site #newsocialnetwork",
-            "html": "<span itemprop=\"mention\" data-mention-name=\"berg\" data-mention-id=\"2\">@berg</span> FIRST post on <a href=\"https://join.app.net\" rel=\"nofollow\">this new site</a> <span itemprop=\"hashtag\" data-hashtag-name=\"newsocialnetwork\">#newsocialnetwork</span>.",
-            "source": {
-                "client_id": "udxGzAVBdXwGtkHmvswR5MbMEeVnq6n4",
-                "name": "Clientastic for iOS",
-                "link": "http://app.net"
-            },
-            "machine_only": false,
-            "reply_to": null,
-            "thread_id": "1",
-            "num_replies": 3,
-            "num_reposts": 0,
-            "num_stars": 0,
-            "entities": {
-                "mentions": [{
-                    "name": "berg",
-                    "id": "2",
-                    "pos": 0,
-                    "len": 5
-                }],
-                "hashtags": [{
-                    "name": "newsocialnetwork",
-                    "pos": 34,
-                    "len": 17
-                }],
-                "links": [{
-                    "text": "this new site",
-                    "url": "https://join.app.net"
-                    "pos": 20,
-                    "len": 13
-                }]
-            },
-            "you_reposted": false,
-            "you_starred": false
-        },
-        "meta": {
-            "code": 200,
-        }
+    "csrfToken": "LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U"
     }
     ```
 
-### Retrieve a Post [GET]
-Returns a specific Post.
+### Retrieve Csrf Token [GET]
+Csrf Tokenを返します。
 
-+ Response 200
++ Response 200 (application/json)
 
-    [Post][]
+    + Headers
 
-### Delete a Post [DELETE]
-Delete a Post. The current user must be the same user who created the Post. It
-returns the deleted Post on success.
+    + Body
 
-+ Response 204
+        ```js
+        {
+            "csrfToken": "LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U"
+        }
+        ```
 
-## Posts Collection [/stream/0/posts]
-A Collection of posts.
+
+## Sign Up [/auth/signup]
 
 + Model (application/json)
 
     ```js
     {
-        "data": [
-            {
-                "id": "1", // note this is a string
-                ...
-            },
-            {
-                "id": "2",
-                ...
-            },
-            {
-                "id": "3",
-                ...
-            },
-        ],
-        "meta": {
-            "code": 200,
-        }
+       "email": "user1@gmail.com",
+       "password": "testuser1"
     }
     ```
 
-### Create a Post [POST]
-Create a new Post object. Mentions and hashtags will be parsed out of the post
-text, as will bare URLs...
+### Sign Up [POST]
+emailとpasswordを用いて、新規ユーザーの登録を行います。 
 
 + Request
 
-    [Post][]
+    + Headers
 
-+ Response 201
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U
+    
+    + Body
 
-    [Post][]
+        ```js
+        {
+            "email": "user1@gmail.com",
+            "password": "testuser1"
+        }
+        ```
 
-### Retrieve all Posts [GET]
-Retrieves all posts.
 
-+ Response 200
++ Response 201 (application/json)
 
-    [Posts Collection][]
+    + Headers
 
-## Stars [/stream/0/posts/{post_id}/star]
-A User’s stars are visible to others, but they are not automatically added to
-your followers’ streams.
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U
+    
+    + Body
+
+        ```js
+        {
+            "message": "ok"
+        }
+        ```
+
+## Login [/auth/login]
+
++ Model (application/json)
+
+    ```js
+    {
+       "email": "user1@gmail.com",
+       "password": "testuser1"
+    }
+    ```
+
+### Login [POST]
+emailとpasswordを用いて、ユーザーのログインを行います。
+
+ログインが正常に行われた場合は、JWTのaccess_tokenが発行され、ResponseのHeaderに追加されます。
+
+以後、RequestのHeaderにaccess_tokenが含まれない場合は、不正なリクエストとみなされます。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U
+    
+    + Body
+
+        ```js
+        {
+            "email": "user1@gmail.com",
+            "password": "testuser1"
+        }
+        ```
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+        ```js
+        {
+            "message": "ok"
+        }
+        ```
+
+## Logout [/auth/logout]
+
+### Logout [POST]
+ログアウトを行います。
+
+Headerからaccess_tokenの値を削除してResponseを返します。
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U;
+
+    + Body
+
+        ```js
+        {
+            "message": "ok"
+        }
+        ```
+
+
+# Group User
+This section groups Curio Nest user resources.
+
+## Login User [/user]
+
++ Model (application/json)
+
+    ```js
+    {
+    "csrfToken": "LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U"
+    }
+    ```
+
+### Retrieve login user [GET]
+ログインしているユーザの情報を返します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "id": 1,
+    "createdAt": "2023-05-24T05:18:40.219Z",
+    "updatedAt": "2023-05-25T09:46:24.526Z",
+    "email": "user1@test.com",
+    "userName": "user1",
+    "profilePicture": null,
+    "coverPicture": null,
+    "questions": [
+        {
+            "id": 5,
+            "createdAt": "2023-05-24T12:03:58.882Z",
+            "updatedAt": "2023-05-25T09:50:16.683Z",
+            "title": "テスト",
+            "description": "",
+            "isPrivate": false,
+            "userId": 3
+        }
+    ],
+    "likeQuestions": [],
+    "books": [
+        {
+            "id": 6,
+            "createdAt": "2023-06-06T06:10:59.496Z",
+            "updatedAt": "2023-06-06T06:10:59.496Z",
+            "googleBooksId": "xscPjwEACAAJ",
+            "isbn": "9784915512391",
+            "title": "ハリー・ポッターと秘密の部屋",
+            "authors": [
+                "J.K. ローリング"
+            ],
+            "publisher": "静山社",
+            "publishedDate": "2000-09",
+            "pageCount": "509",
+            "imgLink": "http://books.google.com/books/content?id=xscPjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+            "previewLink": "http://books.google.co.jp/books?id=xscPjwEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=1&source=gbs_api",
+            "userId": 3
+        }
+    ],
+    "followedBy": [],
+    "following": []
+}
+        ```
+
+### Update login user [PATCH]
+ログインしているユーザの情報を更新します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+        ```js
+        {
+            "userName": "user1+",
+            "profilePicture": null,
+            "coverPicture": null,
+        }
+        ```
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "id": 1,
+    "createdAt": "2023-05-24T05:18:40.219Z",
+    "updatedAt": "2023-05-25T09:46:24.526Z",
+    "email": "user1@test.com",
+    "userName": "user1+", // updated
+    "profilePicture": null,
+    "coverPicture": null,
+    "questions": [
+        {
+            "id": 5,
+            "createdAt": "2023-05-24T12:03:58.882Z",
+            "updatedAt": "2023-05-25T09:50:16.683Z",
+            "title": "テスト",
+            "description": "",
+            "isPrivate": false,
+            "userId": 3
+        }
+    ],
+    "likeQuestions": [],
+    "books": [
+        {
+            "id": 6,
+            "createdAt": "2023-06-06T06:10:59.496Z",
+            "updatedAt": "2023-06-06T06:10:59.496Z",
+            "googleBooksId": "xscPjwEACAAJ",
+            "isbn": "9784915512391",
+            "title": "ハリー・ポッターと秘密の部屋",
+            "authors": [
+                "J.K. ローリング"
+            ],
+            "publisher": "静山社",
+            "publishedDate": "2000-09",
+            "pageCount": "509",
+            "imgLink": "http://books.google.com/books/content?id=xscPjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+            "previewLink": "http://books.google.co.jp/books?id=xscPjwEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=1&source=gbs_api",
+            "userId": 3
+        }
+    ],
+    "followedBy": [],
+    "following": []
+}
+        ```
+
+
+## Specific User [/user/{user_id}]
 
 + Parameters
-    + post_id: `1` (string) - The id of the Post.
+    + user_id: `1` (string) - 特定のユーザーのid
 
-### Star a Post [POST]
-Save a given Post to the current User’s stars. This is just a “save” action,
-not a sharing action.
+### Retrieve user [GET]
+特定のユーザーの情報を返します。
 
-*Note: A repost cannot be starred. Please star the parent Post.*
++ Request
 
-+ Response 200
+    + Headers
 
-    [Post][]
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
 
-### Unstar a Post [DELETE]
-Remove a Star from a Post.
++ Response 200 (application/json)
 
-+ Response 200
+    + Headers
 
-    [Post][]
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "id": 1,
+    "createdAt": "2023-05-24T05:18:40.219Z",
+    "updatedAt": "2023-05-25T09:46:24.526Z",
+    "email": "user1@test.com",
+    "userName": "user1",
+    "profilePicture": null,
+    "coverPicture": null,
+    "questions": [
+        {
+            "id": 5,
+            "createdAt": "2023-05-24T12:03:58.882Z",
+            "updatedAt": "2023-05-25T09:50:16.683Z",
+            "title": "テスト",
+            "description": "",
+            "isPrivate": false,
+            "userId": 3
+        }
+    ],
+    "likeQuestions": [],
+    "books": [
+        {
+            "id": 6,
+            "createdAt": "2023-06-06T06:10:59.496Z",
+            "updatedAt": "2023-06-06T06:10:59.496Z",
+            "googleBooksId": "xscPjwEACAAJ",
+            "isbn": "9784915512391",
+            "title": "ハリー・ポッターと秘密の部屋",
+            "authors": [
+                "J.K. ローリング"
+            ],
+            "publisher": "静山社",
+            "publishedDate": "2000-09",
+            "pageCount": "509",
+            "imgLink": "http://books.google.com/books/content?id=xscPjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+            "previewLink": "http://books.google.co.jp/books?id=xscPjwEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=1&source=gbs_api",
+            "userId": 3
+        }
+    ],
+    "followedBy": [],
+    "following": []
+}
+        ```
+
+### Delete user [DELETE]
+特定のユーザーの情報を削除します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+
+    + Body
+
+    ```js
+    {
+    "message": "アカウントが削除されました"
+}
+    ```
+
+## Follow [/user/{user_id}/follow]
+
++ Parameters
+    + user_id: `1` (string) - 特定のユーザーのid
+
+### Follow user [PATCH]
+特定のユーザーをフォローします。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+
+    + Body
+
+    ```js
+    {
+    "message": "フォローに成功しました。"
+}
+    ```
+
+## UnFollow [/user/{user_id}/unfollow]
+
++ Parameters
+    + user_id: `1` (string) - 特定のユーザーのid
+
+### UnFollow user [PATCH]
+特定のユーザーへのフォローを解除します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+
+    + Body
+
+    ```js
+    {
+    "message": "フォロー解除に成功しました。"
+}
+    ```
+
+
+# Group Question
+This section groups Curio Nest question resources.
+
+## Question [/question]
+
++ Model (application/json)
+
+    ```js
+    {
+    "csrfToken": "LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U"
+    }
+    ```
+
+### Create question [POST]
+Qustionを新規作成します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+        ```js
+        {
+            "title": "どうして空は青いの？",
+            "isPrivate": false
+        }
+        ```
+
++ Response 201 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "id": 8,
+    "createdAt": "2023-06-11T08:52:56.189Z",
+    "updatedAt": "2023-06-11T08:52:56.189Z",
+    "title": "どうして空は青いの？",
+    "description": null,
+    "isPrivate": false,
+    "userId": 8,
+    "likes": [],
+    "books": []
+}
+        ```
+
+
+## Specific Question [/question/{question_id}]
+
++ Parameters
+    + question_id: `8` (string) - 特定のQuestionのid
+
+### Retrieve question [GET]
+ログインしているユーザーの特定のQustionを取得します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "id": 8,
+    "createdAt": "2023-06-11T08:52:56.189Z",
+    "updatedAt": "2023-06-11T08:52:56.189Z",
+    "title": "どうして空は青いの？",
+    "description": null,
+    "isPrivate": false,
+    "userId": 8,
+    "likes": [],
+    "books": []
+}
+        ```
+
+### Update question [PATCH]
+ログインしているユーザーの特定のQustionを更新します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+    ```js
+    {
+        "title": "どうして植物は緑色なの？",
+        "isPrivate": true,
+        "description": "吸収する光の波長が..."
+    }
+    ```
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "id": 8,
+    "createdAt": "2023-06-11T08:52:56.189Z",
+    "updatedAt": "2023-06-11T08:52:56.189Z",
+    "title": "どうして植物は緑色なの？",  // updated
+    "description": "吸収する光の波長が...",  // updated
+    "isPrivate": true,  // updated
+    "userId": 8,
+    "likes": [],
+    "books": []
+}
+        ```
+
+### Delete question [DELETE]
+ログインしているユーザーの特定のQustionを削除します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 204 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "message": "削除に成功しました。"
+}
+        ```
+
+
+## Like Question [/question/{question_id}/like]
+
++ Parameters
+    + question_id: `8` (string) - 特定のQuestionのid
+
+### Like question [PATCH]
+特定のQustionに対して、「いいねをする/いいねを取り消す」操作をします。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "message": "いいねを押しました。" / "いいねを外しました。"
+}
+        ```
+
+        
+
+## Link Book to Question [/question/{question_id}/link]
+
++ Parameters
+    + question_id: `8` (string) - 特定のQuestionのid
+
+### Link book to question [PATCH]
+特定のQuestionに本を紐づけします。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+        ```js
+        {
+            "bookId": 3
+        }
+        ```
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "message": "紐づけに成功しました。"
+}
+        ```
+
+## UnLink Book to Question [/question/{question_id}/unlink]
+
++ Parameters
+    + question_id: `8` (string) - 特定のQuestionのid
+
+### Link book to question [PATCH]
+特定のQuestionと本の紐づけを解除します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+        ```js
+        {
+            "bookId": 3
+        }
+        ```
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+    "message": "紐づけを解除しました。"
+}
+        ```
+
+
+## Collection of all [/question/all/allusers]
+
+### Retrieve all [GET]
+全てのユーザーのQuestionを取得します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        [
+            {
+        "id": 9,
+        "createdAt": "2023-06-11T09:54:30.518Z",
+        "updatedAt": "2023-06-11T09:54:30.518Z",
+        "title": "竪穴住居の利点は？",
+        "description": null,
+        "isPrivate": false,
+        "userId": 12,
+        "likes": [],
+        "books": []
+    },
+    {
+        "id": 8,
+        "createdAt": "2023-06-11T08:52:56.189Z",
+        "updatedAt": "2023-06-11T08:52:56.189Z",
+        "title": "どうして空は青いの？",
+        "description": null,
+        "isPrivate": false,
+        "userId": 8,
+        "likes": [],
+        "books": []
+    },
+    {
+        "id": 7,
+        "createdAt": "2023-06-04T12:15:43.326Z",
+        "updatedAt": "2023-06-04T12:15:43.326Z",
+        "title": "バックエンドエンジニアになる方法は？",
+        "description": null,
+        "isPrivate": false,
+        "userId": 4,
+        "likes": [],
+        "books": []
+    }
+]
+        ```
+
+## timeline [/question/all/timeline]
+
+### Retrieve timeline[GET]
+ログインしているユーザーのタイムラインに表示するクエスチョンを取得します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        [
+    {
+        "id": 8,
+        "createdAt": "2023-06-11T08:52:56.189Z",
+        "updatedAt": "2023-06-11T08:52:56.189Z",
+        "title": "どうして空は青いの？",
+        "description": null,
+        "isPrivate": false,
+        "userId": 8,
+        "likes": [],
+        "books": []
+    },
+    {
+        "id": 7,
+        "createdAt": "2023-06-04T12:15:43.326Z",
+        "updatedAt": "2023-06-04T12:15:43.326Z",
+        "title": "バックエンドエンジニアになる方法は？",
+        "description": null,
+        "isPrivate": false,
+        "userId": 4,
+        "likes": [],
+        "books": []
+    }
+]
+        ```
+
+
+
+
+## profile [/question/all/profile/{user_id}]
+
++ Parameters
+    + user_id: `8` (string) - 特定のuserのid
+
+### Retrieve profile[GET]
+特定のユーザーのプロフィールに表示するクエスチョンを取得します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        [
+    {
+        "id": 8,
+        "createdAt": "2023-06-11T08:52:56.189Z",
+        "updatedAt": "2023-06-11T08:52:56.189Z",
+        "title": "どうして空は青いの？",
+        "description": null,
+        "isPrivate": false,
+        "userId": 8,
+        "likes": [],
+        "books": []
+    },
+    {
+        "id": 7,
+        "createdAt": "2023-06-04T12:15:43.326Z",
+        "updatedAt": "2023-06-04T12:15:43.326Z",
+        "title": "植物の葉が緑色なのはどうして？",
+        "description": null,
+        "isPrivate": true,
+        "userId": 8,
+        "likes": [],
+        "books": []
+    }
+]
+        ```
+
+
+# Group Book
+This section groups Curio Nest book resources.
+
+## Create Book [/book]
+
++ Model (application/json)
+
+    ```js
+    {
+    "csrfToken": "LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U"
+    }
+    ```
+
+### Create book [POST]
+本を本棚に追加します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+        ```js
+        {
+            "title": "ハリー・ポッターと秘密の部屋",
+            "googleBooksId": "xscPjwEACAAJ",
+            "isbn": "9784915512391",
+            "authors": ["J.K. ローリング"],
+            "publisher": "",
+            "publishedDate": "2000-09",
+            "pageCount": "509",
+            "imgLink": "http://books.google.com/books/content?id=xscPjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+            "previewLink": "http://books.google.co.jp/books?id=xscPjwEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=3&source=gbs_api"
+        }
+        ```
+
+
++ Response 201 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+            "id": 9,
+            "createdAt": "2023-06-11T13:38:45.019Z",
+            "updatedAt": "2023-06-11T13:38:45.019Z",
+            "googleBooksId": "xscPjwEACAAJ",
+            "isbn": "9784915512391",
+            "title": "ハリー・ポッターと秘密の部屋",
+            "authors": ["J.K. ローリング"],
+            "publisher": "",
+            "publishedDate": "2000-09",
+            "pageCount": "509",
+            "imgLink": "http://books.google.com/books/content?id=xscPjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+            "previewLink": "http://books.google.co.jp/books?id=xscPjwEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=3&source=gbs_api"
+            "userId": 8,
+            "links": []
+        }
+        ```
+
+## Specific Book [/book/{book_id}]
+
++ Parameters
+    + book_id: `9` (string) - 特定の本のid
+
+
+### Retrieve book [GET]
+本を本棚から取得します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+            "id": 9,
+            "createdAt": "2023-06-11T13:38:45.019Z",
+            "updatedAt": "2023-06-11T13:38:45.019Z",
+            "googleBooksId": "xscPjwEACAAJ",
+            "isbn": "9784915512391",
+            "title": "ハリー・ポッターと秘密の部屋",
+            "authors": ["J.K. ローリング"],
+            "publisher": "",
+            "publishedDate": "2000-09",
+            "pageCount": "509",
+            "imgLink": "http://books.google.com/books/content?id=xscPjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+            "previewLink": "http://books.google.co.jp/books?id=xscPjwEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=3&source=gbs_api"
+            "userId": 8,
+            "links": []
+        }
+        ```
+
+### Delete book [DELETE]
+本を本棚から削除します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+
++ Response 204 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+            "message": "本棚から削除しました。"
+        }
+        ```
+
+## Specific Shelf [/book/all/shelf/{user_id}]
+
++ Parameters
+    + user_id: `8` (string) - 特定のユーザーのid
+
+
+### Retrieve book [GET]
+特定のユーザーの本棚にある本を取得します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        [
+            {
+                "id": 9,
+                "createdAt": "2023-06-11T13:38:45.019Z",
+                "updatedAt": "2023-06-11T13:38:45.019Z",
+                "googleBooksId": "xscPjwEACAAJ",
+                "isbn": "9784915512391",
+                "title": "ハリー・ポッターと秘密の部屋",
+                "authors": ["J.K. ローリング"],
+                "publisher": "",
+                "publishedDate": "2000-09",
+                "pageCount": "509",
+                "imgLink": "http://books.google.com/books/content?id=xscPjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+                "previewLink": "http://books.google.co.jp/books?id=xscPjwEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=3&source=gbs_api"
+                "userId": 8,
+                "links": []
+            },
+            {
+                "id": 10,
+                "createdAt": "2023-06-11T13:51:17.851Z",
+                "updatedAt": "2023-06-11T13:51:17.851Z",
+                "googleBooksId": "jfApAQAAMAAJ",
+                "isbn": "",
+                "title": "ハリー・ポッターと賢者の石",
+                "authors": ["J.K. ローリング"],
+                "publisher": "",
+                "publishedDate": "1999-12",
+                "pageCount": "472",
+                "imgLink": "http://books.google.com/books/content?id=jfApAQAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+                "previewLink": "http://books.google.co.jp/books?id=jfApAQAAMAAJ&q=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=2&source=gbs_api",
+                "userId": 8,
+                "links": []
+            }
+        ]
+        ```
+
+
+## Search Book [/book/search/{keyword}]
+
++ Parameters
+    + keyword: `ハリーポッター` (string) - 検索キーワード
+
+
+### Retrieve book [GET]
+Google Books APIを使って、本をキーワード検索します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+            {
+                "kind": "books#volumes",
+                "totalItems": 3309,
+                "items": [
+                    {
+                        "kind": "books#volume",
+                        "id": "23YkswEACAAJ",
+                        "etag": "vAb9lzJvcEo",
+                        "selfLink": "https://www.googleapis.com/books/v1/volumes/23YkswEACAAJ",
+                        "volumeInfo": {
+                            "title": "ハリー・ポッターシリーズ全巻セット(全7巻・計11冊)",
+                            "authors": [
+                                "J.K.ローリング"
+                            ],
+                            "publishedDate": "2008-07",
+                            "industryIdentifiers": [
+                                {
+                                    "type": "ISBN_10",
+                                    "identifier": "491551269X"
+                                },
+                                {
+                                    "type": "ISBN_13",
+                                    "identifier": "9784915512698"
+                                }
+                            ],
+                            "readingModes": {
+                                "text": false,
+                                "image": false
+                            },
+                            "printType": "BOOK",
+                            "maturityRating": "NOT_MATURE",
+                            "allowAnonLogging": false,
+                            "contentVersion": "preview-1.0.0",
+                            "language": "ja",
+                            "previewLink": "http://books.google.co.jp/books?id=23YkswEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=1&source=gbs_api",
+                            "infoLink": "http://books.google.co.jp/books?id=23YkswEACAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&source=gbs_api",
+                            "canonicalVolumeLink": "https://books.google.com/books/about/%E3%83%8F%E3%83%AA%E3%83%BC_%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA%E5%85%A8%E5%B7%BB.html?hl=&id=23YkswEACAAJ"
+                        },
+                        "saleInfo": {
+                            "country": "JP",
+                            "saleability": "NOT_FOR_SALE",
+                            "isEbook": false
+                        },
+                        "accessInfo": {
+                            "country": "JP",
+                            "viewability": "NO_PAGES",
+                            "embeddable": false,
+                            "publicDomain": false,
+                            "textToSpeechPermission": "ALLOWED",
+                            "epub": {
+                                "isAvailable": false
+                            },
+                            "pdf": {
+                                "isAvailable": false
+                            },
+                            "webReaderLink": "http://play.google.com/books/reader?id=23YkswEACAAJ&hl=&source=gbs_api",
+                            "accessViewStatus": "NONE",
+                            "quoteSharingAllowed": false
+                        },
+                        "searchInfo": {
+                            "textSnippet": "ハリー・ポッターシリーズ全巻セット"
+                        }
+                    },
+                    {
+                        "kind": "books#volume",
+                        "id": "jfApAQAAMAAJ",
+                        "etag": "cHAYWHdbRKk",
+                        "selfLink": "https://www.googleapis.com/books/v1/volumes/jfApAQAAMAAJ",
+                        "volumeInfo": {
+                            "title": "ハリー・ポッターと賢者の石",
+                            "authors": [
+                                "J.K.ローリング"
+                            ],
+                            "publisher": "Seizansha/Tsai Fong Books",
+                            "publishedDate": "1999-12",
+                            "description": "ロンドン郊外の、どこにでもありそうな平凡な街角、ある晩不思議なことがおこる。そして額に稲妻の形をした傷を持つ赤ん坊が、一軒の家の前にそっと置かれる。生まれたばかりの男の子から両親を奪ったのは、暗黒の魔法使い、ヴォルデモート。 平凡な俗物のおじ、おばに育てられ、同い年のいとこにいじめられながら、その子、ハリー・ポッターは何も知らずに11歳の誕生日を迎える。突然その誕生日に、ハリーに手紙が届く。魔法学校への入学許可証だった。キングズ・クロス駅の「9と3/4番線」から魔法学校行きの汽車が出る。ハリーを待ち受けていたのは、夢と、冒険、友情、そして自分の生い立ちをめぐるミステリー。 ハリーはなぜ魔法界で知らぬものが無いほど有名なのか?額の傷はなぜか?自分でも気づかなかったハリーの魔法の力が次々と引き出されてゆく。そして邪悪な魔法使いヴォルデモートとの運命の対決。",
+                            "industryIdentifiers": [
+                                {
+                                    "type": "OTHER",
+                                    "identifier": "UOM:39076002718745"
+                                }
+                            ],
+                            "readingModes": {
+                                "text": false,
+                                "image": false
+                            },
+                            "pageCount": 472,
+                            "printType": "BOOK",
+                            "categories": [
+                                "Reference"
+                            ],
+                            "averageRating": 4,
+                            "ratingsCount": 1,
+                            "maturityRating": "NOT_MATURE",
+                            "allowAnonLogging": false,
+                            "contentVersion": "1.3.1.0.preview.0",
+                            "panelizationSummary": {
+                                "containsEpubBubbles": false,
+                                "containsImageBubbles": false
+                            },
+                            "imageLinks": {
+                                "smallThumbnail": "http://books.google.com/books/content?id=jfApAQAAMAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+                                "thumbnail": "http://books.google.com/books/content?id=jfApAQAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                            },
+                            "language": "ja",
+                            "previewLink": "http://books.google.co.jp/books?id=jfApAQAAMAAJ&q=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&cd=2&source=gbs_api",
+                            "infoLink": "http://books.google.co.jp/books?id=jfApAQAAMAAJ&dq=%E3%83%8F%E3%83%AA%E3%83%BC%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC&hl=&source=gbs_api",
+                            "canonicalVolumeLink": "https://books.google.com/books/about/%E3%83%8F%E3%83%AA%E3%83%BC_%E3%83%9D%E3%83%83%E3%82%BF%E3%83%BC%E3%81%A8%E8%B3%A2%E8%80%85%E3%81%AE%E7%9F%B3.html?hl=&id=jfApAQAAMAAJ"
+                        },
+                        "saleInfo": {
+                            "country": "JP",
+                            "saleability": "NOT_FOR_SALE",
+                            "isEbook": false
+                        },
+                        "accessInfo": {
+                            "country": "JP",
+                            "viewability": "NO_PAGES",
+                            "embeddable": false,
+                            "publicDomain": false,
+                            "textToSpeechPermission": "ALLOWED",
+                            "epub": {
+                                "isAvailable": false
+                            },
+                            "pdf": {
+                                "isAvailable": false
+                            },
+                            "webReaderLink": "http://play.google.com/books/reader?id=jfApAQAAMAAJ&hl=&source=gbs_api",
+                            "accessViewStatus": "NONE",
+                            "quoteSharingAllowed": false
+                        },
+                        "searchInfo": {
+                            "textSnippet": "ロンドン郊外の、どこにでもありそうな平凡な街角、ある晩不思議なことがおこる。そして額に稲妻の形をした傷を持つ赤ん坊が、一軒の家の前にそっと置かれる。生まれたばか ..."
+                        }
+                    },
+                    ...]
+            }
+        ```
+
+
+## recommended books [/book/recommend]
+
+
+### Retrieve recommended book [GET]
+①GPT-3.5にpromptを送信し、疑問を解決するために参考になる本を提案してもらう文章を、レスポンスとして返してもらいます。
+
+②そして、GPT-3.5からのレスポンスをテキスト解析して、本のタイトルや固有名詞を抽出します。
+
+③最後に、抽出したデータを基に、Google Books APIを使って本を６冊検索して返します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+        {
+            "prompt": "どうして空は青いの？"
+        }
+        ```
+
++ Response 200 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+            [
+                {
+                    "kind": "books#volume",
+                    "id": "cO_lAAAAMAAJ",
+                    "etag": "N68Rue4qOyw",
+                    "selfLink": "https://www.googleapis.com/books/v1/volumes/cO_lAAAAMAAJ",
+                    "volumeInfo": {
+                        "title": "朝日新聞縮刷版",
+                        "publishedDate": "2008-04",
+                        "industryIdentifiers": [
+                            {
+                                "type": "OTHER",
+                                "identifier": "UOM:39015075782840"
+                            }
+                        ],
+                        "readingModes": {
+                            "text": false,
+                            "image": false
+                        },
+                        "pageCount": 1594,
+                        "printType": "BOOK",
+                        "categories": [
+                            "Japan"
+                        ],
+                        "maturityRating": "NOT_MATURE",
+                        "allowAnonLogging": false,
+                        "contentVersion": "0.7.6.0.preview.0",
+                        "panelizationSummary": {
+                            "containsEpubBubbles": false,
+                            "containsImageBubbles": false
+                        },
+                        "imageLinks": {
+                            "smallThumbnail": "http://books.google.com/books/content?id=cO_lAAAAMAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+                            "thumbnail": "http://books.google.com/books/content?id=cO_lAAAAMAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                        },
+                        "language": "ja",
+                        "previewLink": "http://books.google.co.jp/books?id=cO_lAAAAMAAJ&q=%E7%A9%BA%E3%81%8C%E9%9D%92%E3%81%84%E7%90%86%E7%94%B1%EF%BC%9A%E6%81%90%E7%AB%9C%E3%81%AE%E5%AD%90%E3%81%A9%E3%82%82%E3%81%9F%E3%81%A1%E3%81%8C%E8%A7%A3%E8%AA%AC%E3%81%97%E3%81%BE%E3%81%99%EF%BC%81&dq=%E7%A9%BA%E3%81%8C%E9%9D%92%E3%81%84%E7%90%86%E7%94%B1%EF%BC%9A%E6%81%90%E7%AB%9C%E3%81%AE%E5%AD%90%E3%81%A9%E3%82%82%E3%81%9F%E3%81%A1%E3%81%8C%E8%A7%A3%E8%AA%AC%E3%81%97%E3%81%BE%E3%81%99%EF%BC%81&hl=&cd=1&source=gbs_api",
+                        "infoLink": "http://books.google.co.jp/books?id=cO_lAAAAMAAJ&dq=%E7%A9%BA%E3%81%8C%E9%9D%92%E3%81%84%E7%90%86%E7%94%B1%EF%BC%9A%E6%81%90%E7%AB%9C%E3%81%AE%E5%AD%90%E3%81%A9%E3%82%82%E3%81%9F%E3%81%A1%E3%81%8C%E8%A7%A3%E8%AA%AC%E3%81%97%E3%81%BE%E3%81%99%EF%BC%81&hl=&source=gbs_api",
+                        "canonicalVolumeLink": "https://books.google.com/books/about/%E6%9C%9D%E6%97%A5%E6%96%B0%E8%81%9E%E7%B8%AE%E5%88%B7%E7%89%88.html?hl=&id=cO_lAAAAMAAJ"
+                    },
+                    "saleInfo": {
+                        "country": "JP",
+                        "saleability": "NOT_FOR_SALE",
+                        "isEbook": false
+                    },
+                    "accessInfo": {
+                        "country": "JP",
+                        "viewability": "NO_PAGES",
+                        "embeddable": false,
+                        "publicDomain": false,
+                        "textToSpeechPermission": "ALLOWED",
+                        "epub": {
+                            "isAvailable": false
+                        },
+                        "pdf": {
+                            "isAvailable": false
+                        },
+                        "webReaderLink": "http://play.google.com/books/reader?id=cO_lAAAAMAAJ&hl=&source=gbs_api",
+                        "accessViewStatus": "NONE",
+                        "quoteSharingAllowed": false
+                    },
+                    "searchInfo": {
+                        "textSnippet": "こんな翼竜<b>たち</b>がどうして地上から姿を消したのか。 ... 鳥類は<b>恐竜</b>の中の獣脚類(ティ見ちゃう A □朝日新聞出版の小学生向け学習誌「かがくるアドベンチャー」 2 号は 17 日発売。 ... そ<b>子ども</b>時代ぼくの家はお寺るような気が<b>します</b>。その<b>理由</b>は<b>子ども</b>&nbsp;..."
+                    }
+                },
+                {
+                    "kind": "books#volume",
+                    "id": "8fy2zQEACAAJ",
+                    "etag": "g9J7ybTK6Dk",
+                    "selfLink": "https://www.googleapis.com/books/v1/volumes/8fy2zQEACAAJ",
+                    "volumeInfo": {
+                        "title": "恐竜学",
+                        "authors": [
+                            "真鍋真"
+                        ],
+                        "publishedDate": "2020-07",
+                        "description": "真鍋真博士による、なるほど・納得の恐竜学。恐竜好きをとりこにしてきた数々の公演で真鍋真博士が受けた質問と回答も掲載!",
+                        "industryIdentifiers": [
+                            {
+                                "type": "ISBN_10",
+                                "identifier": "4052051858"
+                            },
+                            {
+                                "type": "ISBN_13",
+                                "identifier": "9784052051852"
+                            }
+                        ],
+                        "readingModes": {
+                            "text": false,
+                            "image": false
+                        },
+                        "pageCount": 199,
+                        "printType": "BOOK",
+                        "categories": [
+                            "Dinosaurs"
+                        ],
+                        "maturityRating": "NOT_MATURE",
+                        "allowAnonLogging": false,
+                        "contentVersion": "preview-1.0.0",
+                        "panelizationSummary": {
+                            "containsEpubBubbles": false,
+                            "containsImageBubbles": false
+                        },
+                        "imageLinks": {
+                            "smallThumbnail": "http://books.google.com/books/content?id=8fy2zQEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api",
+                            "thumbnail": "http://books.google.com/books/content?id=8fy2zQEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+                        },
+                        "language": "ja",
+                        "previewLink": "http://books.google.co.jp/books?id=8fy2zQEACAAJ&dq=%E7%A9%BA%E3%81%8C%E9%9D%92%E3%81%84%E7%90%86%E7%94%B1%EF%BC%9A%E6%81%90%E7%AB%9C%E3%81%AE%E5%AD%90%E3%81%A9%E3%82%82%E3%81%9F%E3%81%A1%E3%81%8C%E8%A7%A3%E8%AA%AC%E3%81%97%E3%81%BE%E3%81%99%EF%BC%81&hl=&cd=2&source=gbs_api",
+                        "infoLink": "http://books.google.co.jp/books?id=8fy2zQEACAAJ&dq=%E7%A9%BA%E3%81%8C%E9%9D%92%E3%81%84%E7%90%86%E7%94%B1%EF%BC%9A%E6%81%90%E7%AB%9C%E3%81%AE%E5%AD%90%E3%81%A9%E3%82%82%E3%81%9F%E3%81%A1%E3%81%8C%E8%A7%A3%E8%AA%AC%E3%81%97%E3%81%BE%E3%81%99%EF%BC%81&hl=&source=gbs_api",
+                        "canonicalVolumeLink": "https://books.google.com/books/about/%E6%81%90%E7%AB%9C%E5%AD%A6.html?hl=&id=8fy2zQEACAAJ"
+                    },
+                    "saleInfo": {
+                        "country": "JP",
+                        "saleability": "NOT_FOR_SALE",
+                        "isEbook": false
+                    },
+                    "accessInfo": {
+                        "country": "JP",
+                        "viewability": "NO_PAGES",
+                        "embeddable": false,
+                        "publicDomain": false,
+                        "textToSpeechPermission": "ALLOWED",
+                        "epub": {
+                            "isAvailable": false
+                        },
+                        "pdf": {
+                            "isAvailable": false
+                        },
+                        "webReaderLink": "http://play.google.com/books/reader?id=8fy2zQEACAAJ&hl=&source=gbs_api",
+                        "accessViewStatus": "NONE",
+                        "quoteSharingAllowed": false
+                    },
+                    "searchInfo": {
+                        "textSnippet": "真鍋真博士による、なるほど・納得の恐竜学。恐竜好きをとりこにしてきた数々の公演で真鍋真博士が受けた質問と回答も掲載!"
+                    }
+                },
+                ...
+            ]
+        ```
+
+
+
+# Group Upload
+This section groups Curio Nest upload resources.
+
+## Create Upload [/upload]
+
++ Model (application/json)
+
+    ```js
+    {
+    "csrfToken": "LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U"
+    }
+    ```
+
+### Create upload [POST]
+画像ファイルを追加します。
+
++ Request
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+    
+    + Body
+
+        ```
+        file (jpg/jpeg/png)
+        ```
+
+
++ Response 201 (application/json)
+
+    + Headers
+
+        Set-Cookie: csrf-token=LUTuhj0x-50aQ4F7_sHT-vZlInx5_sCMZM9U; access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAdGVzdC5jb20iLCJpYXQiOjE2ODYzMTcxNDMsImV4cCI6MTY4NjMxODk0M30.iDDFeAht16vP3XeCv4NyeebF095BJ8Yi6wy0jKSwK7g
+
+    + Body
+
+        ```js
+            {
+                "fieldname": 'file',
+                "originalname": 'watermark.jpg',
+                "encoding": '7bit',
+                "mimetype": 'image/jpeg',
+                "destination": 'public/images',
+                "filename": '1686537958515-722718810-watermark.jpg',
+                "path": 'public/images/1686537958515-722718810-watermark.jpg',
+                "size": 1731
+            }
+        ```
