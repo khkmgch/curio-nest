@@ -1,5 +1,13 @@
 # :grey_question:Curio Nest
 
+日々の疑問を記録し管理するためのWebアプリです。
+
+以前作成した、「ShiRiTai」というアプリ(https://github.com/khkmgch/ShiRiTai) に
+
+データベースとバックエンドの機能を追加し、フルスタックアプリとして改良したものです。
+
+Prismaを使ってPostgreSQLのデータベース操作を行っています。
+
 ## :globe_with_meridians:Url
 https://curio-nest.vercel.app/
 
