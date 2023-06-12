@@ -23,6 +23,17 @@ https://khkmgch.github.io/curio-nest/
 
 最後まで生き残ると勝利です。
 
+①気になったこと(Question)を記録・投稿
+②1週間後にリマインド機能でQuestionに戻ってくる(Back)
+③Boogle Books Apiを使って本を検索し、My本棚に追加する
+④気になったことについて調べ、答えを記入。本とQuestionを紐づけできる。
+
+分析
+Questionを作成した時刻のデータから、あなたの疑問が生まれやすい時間帯がグラフで分かるようになります。
+
+タイムライン
+タイムラインから他の人のQuestionを見て、自分の気になることのリストに追加することができます。
+
 ![usage](assets/usage.png)
 ## :eyes:作成理由
 
