@@ -56,7 +56,7 @@ https://khkmgch.github.io/curio-nest/
 他の人の本棚も覗けます。
 ![shelf](assets/profile-shelf.png)
 
-### 本の検索
+### :book:本の検索
 AIレコメンド機能で気に入った本がなければ、キーワード検索することができます。
 ![search](assets/search-book.png)
 ### :people_holding_hands:タイムライン
