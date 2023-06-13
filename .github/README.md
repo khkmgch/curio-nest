@@ -12,7 +12,7 @@ Prismaを使ってPostgreSQLのデータベース操作を行っています。
 https://curio-nest.vercel.app/
 
 ## :desktop_computer:Demo
-
+![demo](assets/demo.gif)
 ## :blue_book:バックエンドAPI仕様書
 https://khkmgch.github.io/curio-nest/
 
@@ -202,7 +202,8 @@ AbstractFactoryパターンを用いることで、複数の種類のステー�
 ![wireframe](assets/wireframe1.png)
 ![wireframe](assets/wireframe2.png)
 
-
+## データベース
+![er](assets/er.drawio.png)
 ## :muscle:苦労した点
 
 ### ①Npcのアルゴリズム
