@@ -51,7 +51,7 @@ https://khkmgch.github.io/curio-nest/
 さらに、フルスタックな技術が必要なアプリをゴールに設定することで、作者のレベルアップ:muscle:を図りました。
 
 ## :clock3:期間
-2022年10月から2ヶ月、2023年5月の合計3ヶ月程
+2022年10~11月、2023年5月の合計3ヶ月程
 
 ## :hammer_and_wrench:使用技術
 ![tech](assets/tech.drawio.png)
