@@ -87,6 +87,7 @@ SNSのように、プロフィール画像を好みのものに変更できま�
 
 
 ## :blue_book:バックエンドAPIの仕様書
+詳細はこちらをクリックして下さい。
 https://khkmgch.github.io/curio-nest/
 
 ## :hammer_and_wrench:使用技術
