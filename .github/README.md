@@ -238,7 +238,7 @@ Prismaを使ってスキーマの作成とマイグレーションを行いま�
 アプリへのアクセス時にCSRF Tokenを発行しcookieにシークレットキーを設定します。  
 リクエストのHeaderに有効なCSRF Tokenを含まない場合はアクセスできないように実装しました。
 
-※ https://www.trendmicro.com/ja_jp/security-intelligence/research-reports/threat-solution/csrf.html
+※参考: https://www.trendmicro.com/ja_jp/security-intelligence/research-reports/threat-solution/csrf.html
 #### JWT
 ログイン時にJWTを発行し、cookieに設定します。  
 ### ⑥NextJS
