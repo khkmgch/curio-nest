@@ -6,7 +6,6 @@
 
 データベースとバックエンドの機能を追加し、フルスタックアプリとして改良したものです。
 
-Prismaを使ってPostgreSQLのデータベース操作を行っています。
 
 ## :globe_with_meridians:Url
 https://curio-nest.vercel.app/
