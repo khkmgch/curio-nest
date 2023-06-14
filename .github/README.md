@@ -90,6 +90,7 @@ SNSのように、プロフィール画像を好みのものに変更できま�
 https://khkmgch.github.io/curio-nest/
 
 ## :hammer_and_wrench:使用技術
+主な使用技術と開発フローを示しています。
 ![tech](assets/tech.drawio.png)
 ### 開発環境
 - Docker / Docker Compose
