@@ -172,11 +172,17 @@ AIレコメンド機能により、疑問の解決を手助けする機能を実
 3. 抽出結果をキーワードとして、Google Books APIで本を検索し、詳細な情報はOpenBDで補います。
 4. クライアントに6冊分の本のデータを返し、おすすめ表示します。
 
+[該当するコード]
+- [getBooksRecommendedByAI()](../server/src/book/book.service.ts) (73行目)
+- [テキスト解析](../server/src/book/utils/nlp.util.ts)
+- [GPT](../server/src/chatgpt/chatgpt.service.ts)
 ### 思考過程を記録
 疑問と本を紐づける機能により、ユーザーがどの本を読んで疑問を解決したのかの記録を残せるようにしました。  
 これにより、振り返りを簡単に行うことができます。
 
 実装は、QuestionテーブルとBookテーブルの関係を表すLinkテーブル（中間テーブル）を定義する方法を取りました。
+
+[疑問と本を紐づけするコード](../server/src/question/question.controller.ts) (96行目)
 
 ### 本棚
 読んだ本を本棚に追加して管理できるようにしました。
@@ -185,6 +191,8 @@ AIレコメンド機能により、疑問の解決を手助けする機能を実
 - 疑問と本を結び付けて管理したい
 - 自分の読んだ本を管理したい
 - 他のユーザーの本棚を覗いてみたいという作者の好奇心
+
+[BookShelfコンポーネント](../client/components/book/BookShelf.tsx)
 
 ## :cd:データベース
 以下のようなエンティティとリレーションで構成しました。
@@ -200,6 +208,8 @@ AIレコメンド機能により、疑問の解決を手助けする機能を実
 | Follow ※ | どのユーザーが、どのユーザーをフォローしているか |
 
 ※ 中間テーブル
+
+[Prismaのスキーマファイル](../server/prisma/schema.prisma)
 
 ## :muscle:苦労した点
 ### ①デプロイ
@@ -219,6 +229,8 @@ Prismaを使用するメリットを実感できました。
 
 Docker関連のファイルの準備を、ドキュメントを参照しながら行ったため、時間がかかりましたが  
 勉強になりました。
+
+[docker-compose.yml](../docker-compose.yml)
 
 ### ③バックエンドAPIの開発
 初めて、バックエンドAPIの開発に挑戦しました。  
@@ -241,7 +253,9 @@ Prismaを使ってスキーマの作成とマイグレーションを行いま�
 
 ※参考: https://www.trendmicro.com/ja_jp/security-intelligence/research-reports/threat-solution/csrf.html
 #### JWT
-ログイン時にJWTを発行し、cookieに設定します。  
+ログイン時にJWTを発行し、cookieに設定します。 
+
+[認証部分のコード](../server/src/auth)
 ### ⑥NextJS
 Nextjsを使うのも初めてでした。  
 コンポーネントベースの記述方法や、動的なルーティングの方法など、学びが多くありました。
