@@ -36,10 +36,10 @@ export class ChatgptService {
           },
         ],
       };
-      console.log(params);
+      // console.log(params);
       const response =
         await this.openai.createChatCompletion(params);
-
+      console.log("response: ",response)
       return response.data.choices[0].message;
     } catch (error) {
       console.error(error);
