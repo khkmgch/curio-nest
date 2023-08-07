@@ -7,6 +7,7 @@
 https://curio-nest.vercel.app/
 
 ※ Render.comの無料枠にデプロイしているため、サーバーの起動に時間がかかります。
+また、8月14日に無料枠のデータベースサーバーが期限切れになるため、一度データの初期化を行います。
 
 ## :desktop_computer:Demo
 ![demo](assets/demo.gif)
