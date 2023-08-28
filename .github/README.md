@@ -160,6 +160,7 @@ https://khkmgch.github.io/curio-nest/
 
 ### Tailwind CSS
 - 色や線などの細かい設定が可能
+- BootStrapはデザインが画一化されているため、細かい調整がしやすいTailwindを使ってみたかった
 - 予め用意されたボタンなどがなく、記述量が多くなってしまうため、Mantineと併用する
 
 ### Zustand
